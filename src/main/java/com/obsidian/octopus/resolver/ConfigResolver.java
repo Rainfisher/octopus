@@ -1,10 +1,10 @@
-package com.obsidian.octopus.config;
+package com.obsidian.octopus.resolver;
 
 /**
  *
  * @author Alex Chou <xi.zhou at obsidian>
  */
-public class ConfigDescribe {
+public class ConfigResolver {
 
     private String name;
     private String path;
@@ -51,5 +51,4 @@ public class ConfigDescribe {
     public void setCallback(String callback) {
         this.callback = callback;
     }
-
 }

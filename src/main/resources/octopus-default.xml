@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <octopus>
 
-    <default-startup>logic</default-startup>
+    <default-module>logic</default-module>
 
-    <startup name="logic">
+    <module name="logic">
 
         <config name="app">
             <param name="file">conf/logic/app.json</param>
@@ -48,6 +48,6 @@
             <timer-delay></timer-delay>
         </timer>
 
-    </startup>
+    </module>
 
 </octopus>
