@@ -5,6 +5,7 @@ import com.obsidian.octopus.resolver.FilterResolver;
 import com.obsidian.octopus.resolver.IocResolver;
 import com.obsidian.octopus.resolver.ListenerResolver;
 import com.obsidian.octopus.resolver.ModuleResolver;
+import com.obsidian.octopus.resolver.QuartzResolver;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,8 +63,8 @@ public class XmlConfigurationModuleProvider {
         moduleResolver.setFilterResolvers(filterResolvers);
 
         _resolveQuartzConfig();
-        boolean quartzEmpty = _resolveQuartz();
-        moduleResolver.setQuartz(!quartzEmpty);
+        QuartzResolver quartzResolver = _resolveQuartz();
+        moduleResolver.setQuartzResolver(quartzResolver);
 
         return moduleResolver;
     }
@@ -139,8 +140,8 @@ public class XmlConfigurationModuleProvider {
         }
     }
 
-    private boolean _resolveQuartz() throws ClassNotFoundException, SchedulerException {
-        Scheduler sched = StdSchedulerFactory.getDefaultScheduler();
+    private QuartzResolver _resolveQuartz() throws ClassNotFoundException, SchedulerException {
+        QuartzResolver quartzResolver = new QuartzResolver();
         List<Element> elements = element.elements("quartz-group");
         for (int i = 0; i < elements.size(); i++) {
             Element group = elements.get(i);
@@ -148,23 +149,24 @@ public class XmlConfigurationModuleProvider {
             if (groupName == null) {
                 groupName = "group-" + (i + 1);
             }
-            Map<String, JobDetail> jobMap = new HashMap<>();
+            quartzResolver.setGroupName(groupName);
+
             List<Element> jobs = group.elements("job");
             for (int j = 0; j < jobs.size(); j++) {
-                Element job = jobs.get(j);
-                String jobName = job.attributeValue("id");
+                Element jobElement = jobs.get(j);
+                String jobName = jobElement.attributeValue("id");
                 if (jobName == null) {
                     jobName = "job-" + (j + 1);
                 }
-                Element clazz = job.element("job-class");
+                Element clazz = jobElement.element("job-class");
                 if (clazz == null) {
                     throw new NullPointerException("octopus: job class not set");
                 }
                 Class jobClass = ClassUtils.getClass(clazz.getStringValue());
-                JobBuilder jobBuilder = JobBuilder.newJob(jobClass);
-                jobBuilder.withIdentity(jobName, groupName);
-                JobDetail jobDetail = jobBuilder.build();
-                jobMap.put(jobName, jobDetail);
+                QuartzResolver.Job job = new QuartzResolver.Job();
+                job.setName(jobName);
+                job.setClazz(jobClass);
+                quartzResolver.addJob(job);
             }
 
             List<Element> triggers = group.elements("trigger");
@@ -181,44 +183,26 @@ public class XmlConfigurationModuleProvider {
                     jobTasks = jobsElement.getStringValue().split(",");
                 }
 
-                ScheduleBuilder scheduleBuilder;
+                QuartzResolver.Trigger trigger = new QuartzResolver.Trigger();
+                trigger.setName(triggerName);
+                trigger.setJobs(jobTasks);
+
                 Element triggerCron = triggerElement.element("trigger-cron");
-                if (triggerCron == null) {
+                if (triggerCron != null) {
+                    trigger.setCron(triggerCron.getStringValue());
+                } else {
                     Element delay = triggerElement.element("trigger-delay");
                     int interval = Integer.valueOf(delay.getStringValue());
                     Element repeated = triggerElement.element("trigger-repeated");
                     int repeat = repeated == null ? 0 : Integer.valueOf(repeated.getStringValue());
 
-                    SimpleScheduleBuilder simple = SimpleScheduleBuilder.simpleSchedule();
-                    simple.withIntervalInMilliseconds(interval);
-                    if (repeat == 0) {
-                        simple.repeatForever();
-                    } else {
-                        simple.withRepeatCount(repeat);
-                    }
-                    scheduleBuilder = simple;
-                } else {
-                    String cron = triggerCron.getStringValue();
-                    scheduleBuilder = CronScheduleBuilder.cronSchedule(cron);
+                    trigger.setDelay(interval);
+                    trigger.setRepeated(repeat);
                 }
-
-                TriggerBuilder triggerBuilder = TriggerBuilder.newTrigger();
-                triggerBuilder.withIdentity(triggerName, groupName);
-                triggerBuilder.startNow();
-                triggerBuilder.withSchedule(scheduleBuilder);
-                Trigger trigger = triggerBuilder.build();
-
-                if (jobTasks != null) {
-                    for (String jobName : jobTasks) {
-                        JobDetail jobDetail = jobMap.get(jobName);
-                        if (jobDetail != null) {
-                            sched.scheduleJob(jobDetail, trigger);
-                        }
-                    }
-                }
+                quartzResolver.addTrigger(trigger);
             }
         }
-        return elements.isEmpty();
+        return quartzResolver;
     }
 
 }

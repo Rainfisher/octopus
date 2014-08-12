@@ -13,11 +13,20 @@ import com.obsidian.octopus.resolver.FilterResolver;
 import com.obsidian.octopus.resolver.IocResolver;
 import com.obsidian.octopus.resolver.ListenerResolver;
 import com.obsidian.octopus.resolver.ModuleResolver;
+import com.obsidian.octopus.resolver.QuartzResolver;
 import com.obsidian.octopus.resolver.Resolver;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang.BooleanUtils;
+import org.quartz.CronScheduleBuilder;
+import org.quartz.JobBuilder;
+import org.quartz.JobDetail;
+import org.quartz.ScheduleBuilder;
 import org.quartz.Scheduler;
+import org.quartz.SimpleScheduleBuilder;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +58,7 @@ public abstract class Dispatcher {
             _processIoc();
             _processListener();
             _processFilter();
+            _processQuartz();
 
             _contextStart();
         }
@@ -106,6 +116,52 @@ public abstract class Dispatcher {
             }
         }
 
+        private void _processQuartz() throws Exception {
+            LOGGER.debug("octopus: process quartz........");
+            QuartzResolver quartzResolver = moduleResolver.getQuartzResolver();
+
+            Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+            Map<String, JobDetail> jobMap = new HashMap<>();
+            for (QuartzResolver.Job job : quartzResolver.getJobs()) {
+                JobBuilder jobBuilder = JobBuilder.newJob(job.getClazz());
+                jobBuilder.withIdentity(job.getName(), quartzResolver.getGroupName());
+                JobDetail jobDetail = jobBuilder.build();
+                jobMap.put(job.getName(), jobDetail);
+            }
+
+            for (QuartzResolver.Trigger trigger : quartzResolver.getTriggers()) {
+                ScheduleBuilder scheduleBuilder;
+                if (trigger.getCron() == null) {
+                    SimpleScheduleBuilder simple = SimpleScheduleBuilder.simpleSchedule();
+                    simple.withIntervalInMilliseconds(trigger.getDelay());
+                    if (trigger.getRepeated() == 0) {
+                        simple.repeatForever();
+                    } else {
+                        simple.withRepeatCount(trigger.getRepeated());
+                    }
+                    scheduleBuilder = simple;
+                } else {
+                    scheduleBuilder = CronScheduleBuilder.cronSchedule(trigger.getCron());
+                }
+
+                TriggerBuilder triggerBuilder = TriggerBuilder.newTrigger();
+                triggerBuilder.withIdentity(trigger.getName(), quartzResolver.getGroupName());
+                triggerBuilder.startNow();
+                triggerBuilder.withSchedule(scheduleBuilder);
+                Trigger tr = triggerBuilder.build();
+
+                if (trigger.getJobs() != null) {
+                    for (String jobName : trigger.getJobs()) {
+                        JobDetail jobDetail = jobMap.get(jobName);
+                        if (jobDetail != null) {
+                            scheduler.scheduleJob(jobDetail, tr);
+                        }
+                    }
+                }
+            }
+
+        }
+
         private void _contextStart() throws Exception {
             IocInstanceProvider iocProvide = context.getIocProvide();
 
@@ -134,7 +190,7 @@ public abstract class Dispatcher {
                 octopusListener.onStart(context);
             }
 
-            if (moduleResolver.isQuartz()) {
+            if (moduleResolver.getQuartzResolver() != null) {
                 Scheduler sched = StdSchedulerFactory.getDefaultScheduler();
                 sched.setJobFactory(new GuiceJobFactory(iocProvide));
                 sched.start();
