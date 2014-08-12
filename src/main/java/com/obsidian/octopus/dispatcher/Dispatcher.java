@@ -2,6 +2,7 @@ package com.obsidian.octopus.dispatcher;
 
 import com.obsidian.octopus.configuration.ConfigurationHotLoader;
 import com.obsidian.octopus.configuration.ConfigurationLoader;
+import com.obsidian.octopus.configuration.ConfigurationLoaderFactory;
 import com.obsidian.octopus.context.Context;
 import com.obsidian.octopus.context.ContextProvider;
 import com.obsidian.octopus.filter.OctopusMinaFilter;
@@ -55,6 +56,9 @@ public abstract class Dispatcher {
             moduleResolver = resolver.getModuleResolver();
             context = ContextProvider.getInstance();
             _processConfig();
+
+            _contextConfig();
+
             _processIoc();
             _processListener();
             _processFilter();
@@ -68,7 +72,7 @@ public abstract class Dispatcher {
             List<ConfigResolver> configResolvers = moduleResolver.getConfigResolvers();
             ConfigurationHotLoader hotLoader = context.getConfigurationHotLoader();
             for (ConfigResolver configResolver : configResolvers) {
-                ConfigurationLoader loader = new ConfigurationLoader(configResolver);
+                ConfigurationLoader loader = ConfigurationLoaderFactory.build(configResolver);
                 if (BooleanUtils.isTrue(configResolver.isHotLoad())) {
                     hotLoader.addConfigurationLoader(loader);
                 }
@@ -162,7 +166,7 @@ public abstract class Dispatcher {
 
         }
 
-        private void _contextStart() throws Exception {
+        private void _contextConfig() throws Exception {
             IocInstanceProvider iocProvide = context.getIocProvide();
 
             boolean hotload = false;
@@ -170,8 +174,6 @@ public abstract class Dispatcher {
             for (Map.Entry<ConfigResolver, ConfigurationLoader> entry : map.entrySet()) {
                 ConfigResolver configResolver = entry.getKey();
                 ConfigurationLoader loader = entry.getValue();
-
-                iocProvide.injectMembers(loader);
                 if (BooleanUtils.isTrue(configResolver.isHotLoad())) {
                     if (BooleanUtils.isTrue(configResolver.isLoadOnStart())) {
                         loader.process();
@@ -181,9 +183,21 @@ public abstract class Dispatcher {
                     loader.process();
                 }
             }
+
+            for (Map.Entry<ConfigResolver, ConfigurationLoader> entry : map.entrySet()) {
+                ConfigurationLoader loader = entry.getValue();
+                iocProvide.injectMembers(loader);
+
+                loader.triggerCallback(null);
+            }
+
             if (hotload) {
                 context.getConfigurationHotLoader().start();
             }
+        }
+
+        private void _contextStart() throws Exception {
+            IocInstanceProvider iocProvide = context.getIocProvide();
 
             List<OctopusListener> listeners = context.getListeners();
             for (OctopusListener octopusListener : listeners) {

@@ -8,24 +8,13 @@ import com.obsidian.octopus.resolver.ModuleResolver;
 import com.obsidian.octopus.resolver.QuartzResolver;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.dom4j.Attribute;
 import org.dom4j.Element;
-import org.quartz.CronScheduleBuilder;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.ScheduleBuilder;
-import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.SimpleScheduleBuilder;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
-import org.quartz.impl.StdSchedulerFactory;
 
 /**
  *
@@ -74,7 +63,6 @@ public class XmlConfigurationModuleProvider {
         List<ConfigResolver> list = new ArrayList<>();
         for (Element config : elements) {
             ConfigResolver configResolver = new ConfigResolver();
-            System.out.println(config.attributeValue("name"));
             BeanUtils.setProperty(configResolver, "name", config.attributeValue("name"));
             List<Element> params = config.elements("param");
             for (Element param : params) {
