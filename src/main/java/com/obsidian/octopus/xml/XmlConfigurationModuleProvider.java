@@ -62,7 +62,8 @@ public class XmlConfigurationModuleProvider {
         moduleResolver.setFilterResolvers(filterResolvers);
 
         _resolveQuartzConfig();
-        _resolveQuartz();
+        boolean quartzEmpty = _resolveQuartz();
+        moduleResolver.setQuartz(!quartzEmpty);
 
         return moduleResolver;
     }
@@ -119,16 +120,13 @@ public class XmlConfigurationModuleProvider {
         List<FilterResolver> list = new ArrayList<>();
         for (Element filter : elements) {
             FilterResolver filterResolver = new FilterResolver();
-
             Element classElement = filter.element("filter-class");
             if (classElement == null || classElement.getStringValue().isEmpty()) {
                 throw new NullPointerException("octopus: filter-class is empty");
             }
             BeanUtils.setProperty(filterResolver, "clazz", classElement.getStringValue());
-
             Element group = filter.element("group");
             BeanUtils.setProperty(filterResolver, "group", group.getStringValue());
-
             list.add(filterResolver);
         }
         return list;
@@ -141,7 +139,7 @@ public class XmlConfigurationModuleProvider {
         }
     }
 
-    private void _resolveQuartz() throws ClassNotFoundException, SchedulerException {
+    private boolean _resolveQuartz() throws ClassNotFoundException, SchedulerException {
         Scheduler sched = StdSchedulerFactory.getDefaultScheduler();
         List<Element> elements = element.elements("quartz-group");
         for (int i = 0; i < elements.size(); i++) {
@@ -220,6 +218,7 @@ public class XmlConfigurationModuleProvider {
                 }
             }
         }
+        return elements.isEmpty();
     }
 
 }

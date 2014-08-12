@@ -12,6 +12,7 @@ public class ModuleResolver {
     private IocResolver iocResolver;
     private List<ListenerResolver> listenerResolvers;
     private List<FilterResolver> filterResolvers;
+    private Boolean quartz;
 
     public List<ConfigResolver> getConfigResolvers() {
         return configResolvers;
@@ -43,6 +44,14 @@ public class ModuleResolver {
 
     public void setFilterResolvers(List<FilterResolver> filterResolvers) {
         this.filterResolvers = filterResolvers;
+    }
+
+    public Boolean isQuartz() {
+        return quartz;
+    }
+
+    public void setQuartz(Boolean quartz) {
+        this.quartz = quartz;
     }
 
 }

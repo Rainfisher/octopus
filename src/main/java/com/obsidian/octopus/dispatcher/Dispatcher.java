@@ -7,6 +7,7 @@ import com.obsidian.octopus.context.ContextProvider;
 import com.obsidian.octopus.filter.OctopusMinaFilter;
 import com.obsidian.octopus.ioc.IocInstanceProvider;
 import com.obsidian.octopus.listener.OctopusListener;
+import com.obsidian.octopus.quartz.GuiceJobFactory;
 import com.obsidian.octopus.resolver.ConfigResolver;
 import com.obsidian.octopus.resolver.FilterResolver;
 import com.obsidian.octopus.resolver.IocResolver;
@@ -100,6 +101,7 @@ public abstract class Dispatcher {
                     throw new NullPointerException("octopus: listener class is empty");
                 }
                 OctopusMinaFilter minaFilter = (OctopusMinaFilter) iocProvide.getInstance(clazz);
+                minaFilter.setName(filterResolver.getGroup());
                 context.addFilter(minaFilter);
             }
         }
@@ -127,8 +129,11 @@ public abstract class Dispatcher {
                 octopusListener.onStart(context);
             }
 
-            Scheduler sched = StdSchedulerFactory.getDefaultScheduler();
-            sched.start();
+            if (moduleResolver.isQuartz()) {
+                Scheduler sched = StdSchedulerFactory.getDefaultScheduler();
+                sched.setJobFactory(new GuiceJobFactory(iocProvide));
+                sched.start();
+            }
 
         }
 

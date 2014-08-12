@@ -8,7 +8,7 @@ import com.obsidian.octopus.context.Context;
  */
 public class OctopusListener {
 
-    public void onStart(Context context) {
+    public void onStart(Context context) throws Exception {
 
     }
 
