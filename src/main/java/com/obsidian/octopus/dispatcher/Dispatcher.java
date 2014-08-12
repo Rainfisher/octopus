@@ -109,6 +109,7 @@ public abstract class Dispatcher {
         private void _contextStart() throws Exception {
             IocInstanceProvider iocProvide = context.getIocProvide();
 
+            boolean hotload = false;
             Map<ConfigResolver, ConfigurationLoader> map = context.getConfigurationLoaderMap();
             for (Map.Entry<ConfigResolver, ConfigurationLoader> entry : map.entrySet()) {
                 ConfigResolver configResolver = entry.getKey();
@@ -119,11 +120,14 @@ public abstract class Dispatcher {
                     if (BooleanUtils.isTrue(configResolver.isLoadOnStart())) {
                         loader.process();
                     }
+                    hotload = true;
                 } else {
                     loader.process();
                 }
             }
-            context.getConfigurationHotLoader().start();
+            if (hotload) {
+                context.getConfigurationHotLoader().start();
+            }
 
             List<OctopusListener> listeners = context.getListeners();
             for (OctopusListener octopusListener : listeners) {
