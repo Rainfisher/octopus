@@ -123,6 +123,7 @@ public abstract class Dispatcher {
                     loader.process();
                 }
             }
+            context.getConfigurationHotLoader().start();
 
             List<OctopusListener> listeners = context.getListeners();
             for (OctopusListener octopusListener : listeners) {
