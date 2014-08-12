@@ -36,10 +36,7 @@ public class OctopusTest {
      * Test of main method, of class Octopus.
      */
     @org.junit.Test
-    public void testMain() {
-        System.out.println("main");
-        String[] args = null;
-        Octopus.main(args);
+    public void testMain() throws Exception {
     }
 
 }

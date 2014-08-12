@@ -6,47 +6,55 @@
     <module name="logic">
 
         <config name="app">
-            <param name="file">conf/logic/app.json</param>
+            <param name="path">conf/logic/app.json</param>
             <param name="fileType">json</param>
-            <param name="hotLoad">true</param>
-            <param name="callback"></param>
         </config>
         <config>
-            <param name="file">conf/logic/mybatis.properties</param>
+            <param name="path">conf/logic/mybatis.properties</param>
             <param name="fileType">properties</param>
         </config>
         <config>
-            <param name="file">conf/logic/crossrealm.json</param>
-            <param name="fileType">json</param>
-            <param name="hotLoad">true</param>
-        </config>
-        <config>
-            <param name="file">conf/logic/memcache.json</param>
+            <param name="path">conf/logic/crossrealm.json</param>
             <param name="fileType">json</param>
         </config>
         <config>
+            <param name="path">conf/logic/memcache.json</param>
+            <param name="fileType">json</param>
+        </config>
+        <config name="json/">
             <param name="path">conf/json</param>
             <param name="fileType">json</param>
             <param name="extensions">json</param>
+            <param name="loadOnStart">true</param>
             <param name="hotLoad">true</param>
         </config>
 
-        <ioc factory="guice" class="" />
+        <ioc factory="guice" iocClass="com.obsidian.octopus.ioc.IocGuiceProviderImpl" />
 
         <listener>
-            <listener-class></listener-class>
+            <listener-class>com.obsidian.octopus.listener.OctopusListener</listener-class>
         </listener>
 
         <filter>
+            <group>core</group>
             <filter-class></filter-class>
         </filter>
 
-        <timer-thread>1</timer-thread>
-        <timer>
-            <timer-class></timer-class>
-            <timer-initialDelay></timer-initialDelay>
-            <timer-delay></timer-delay>
-        </timer>
+        <quartz-config>conf/json/quartz.properties</quartz-config>
+        <quartz-group id="group1">
+            <job id="job1">
+                <job-class></job-class>
+            </job>
+            <trigger id="trigger1">
+                <trigger-delay>100</trigger-delay>
+                <trigger-repeated>10</trigger-repeated>
+                <jobs>job1</jobs>
+            </trigger>
+            <trigger id="trigger2">
+                <trigger-cron></trigger-cron>
+                <jobs></jobs>
+            </trigger>
+        </quartz-group>
 
     </module>
 

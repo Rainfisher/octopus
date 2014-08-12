@@ -1,7 +1,7 @@
 package com.obsidian.octopus;
 
 import com.obsidian.octopus.dispatcher.Dispatcher;
-import com.obsidian.octopus.xml.XmlResolver;
+import com.obsidian.octopus.xml.XmlConfigurationProvider;
 
 /**
  *
@@ -11,10 +11,10 @@ public class Startup {
 
     public static void main(String[] args) throws Exception {
         String moduleName = null;
-        if (args.length > 0) {
+        if (args != null && args.length > 0) {
             moduleName = args[0];
         }
-        XmlResolver resolver = new XmlResolver(moduleName);
+        XmlConfigurationProvider resolver = new XmlConfigurationProvider(moduleName);
         Dispatcher dispatcher = Dispatcher.createDispatcher();
         dispatcher.start(resolver.build());
     }

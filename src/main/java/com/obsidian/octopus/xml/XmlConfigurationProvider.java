@@ -15,11 +15,11 @@ import org.dom4j.Element;
  *
  * @author Alex Chou <xi.zhou at obsidian>
  */
-public class XmlResolver {
+public class XmlConfigurationProvider {
 
     private String moduleName;
 
-    public XmlResolver(String moduleName) {
+    public XmlConfigurationProvider(String moduleName) {
         this.moduleName = moduleName;
     }
 
@@ -50,16 +50,16 @@ public class XmlResolver {
     }
 
     private void _resolveModules(Resolver resolver, Element octopus)
-            throws ClassNotFoundException {
+            throws Exception {
         List<Element> elements = octopus.elements("module");
         for (Element element : elements) {
-            XmlModuleResolver xmlModuleResolver = new XmlModuleResolver(element);
+            XmlConfigurationModuleProvider xmlModuleResolver = new XmlConfigurationModuleProvider(element);
             ModuleResolver moduleResolver = xmlModuleResolver.build();
             resolver.putModule(xmlModuleResolver.getName(), moduleResolver);
         }
     }
 
-    public Resolver build() throws IOException, DocumentException, ClassNotFoundException {
+    public Resolver build() throws Exception {
         Document document = _getDocument("/octopus.xml");
         if (document == null) {
             document = _getDocument("/octopus-default.xml");

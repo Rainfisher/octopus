@@ -9,8 +9,10 @@ public class ConfigResolver {
     private String name;
     private String path;
     private String fileType;
-    private String hotLoad;
-    private String callback;
+    private String[] extensions;
+    private Boolean loadOnStart;
+    private Boolean hotLoad;
+    private Class callback;
 
     public String getName() {
         return name;
@@ -36,19 +38,35 @@ public class ConfigResolver {
         this.fileType = fileType;
     }
 
-    public String getHotLoad() {
+    public String[] getExtensions() {
+        return extensions;
+    }
+
+    public void setExtensions(String[] extensions) {
+        this.extensions = extensions;
+    }
+
+    public Boolean isLoadOnStart() {
+        return loadOnStart;
+    }
+
+    public void setLoadOnStart(Boolean loadOnStart) {
+        this.loadOnStart = loadOnStart;
+    }
+
+    public Boolean isHotLoad() {
         return hotLoad;
     }
 
-    public void setHotLoad(String hotLoad) {
+    public void setHotLoad(Boolean hotLoad) {
         this.hotLoad = hotLoad;
     }
 
-    public String getCallback() {
+    public Class getCallback() {
         return callback;
     }
 
-    public void setCallback(String callback) {
+    public void setCallback(Class callback) {
         this.callback = callback;
     }
 }

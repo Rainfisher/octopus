@@ -28,8 +28,12 @@ public class Resolver {
         this.moduleMap.put(name, moduleResolver);
     }
 
-    public Map<String, ModuleResolver> getModuleMap() {
-        return moduleMap;
+    public ModuleResolver getModuleResolver() {
+        return getModuleResolver(moduleName);
+    }
+
+    public ModuleResolver getModuleResolver(String name) {
+        return moduleMap.get(name);
     }
 
 }

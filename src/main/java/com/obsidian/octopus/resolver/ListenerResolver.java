@@ -6,14 +6,14 @@ package com.obsidian.octopus.resolver;
  */
 public class ListenerResolver {
 
-    private Class clazz;
+    private Class listenerClass;
 
-    public Class getClazz() {
-        return clazz;
+    public Class getListenerClass() {
+        return listenerClass;
     }
 
-    public void setClazz(Class clazz) {
-        this.clazz = clazz;
+    public void setListenerClass(Class listenerClass) {
+        this.listenerClass = listenerClass;
     }
 
 }
