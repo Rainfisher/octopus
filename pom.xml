@@ -9,8 +9,8 @@
 
     <!-- 版本控制 -->
     <scm>
-        <connection>scm:git:git@github.com:Rainfisher/octopus.git</connection>
-        <developerConnection>scm:git:git@github.com:Rainfisher/octopus.git</developerConnection>
+        <connection>scm:git:ssh://git@github.com/Rainfisher/octopus.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/Rainfisher/octopus.git</developerConnection>
         <url>https://github.com/Rainfisher/octopus</url>
         <tag>HEAD</tag>
     </scm>
@@ -38,6 +38,24 @@
         </snapshotRepository>
     </distributionManagement>
 
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>public</id>
+            <name>Public Repositories</name>
+            <url>http://git.obsidian-interactive.com:8081/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>public</id>
+            <name>Public Repositories</name>
+            <url>http://git.obsidian-interactive.com:8081/nexus/content/groups/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <build>
         <plugins>
             <plugin>
@@ -48,8 +66,22 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-scm-plugin</artifactId>
+                <version>1.9</version>
+                <configuration>
+                    <scmVersionType>branch</scmVersionType>
+                    <scmVersion>master</scmVersion>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5</version>
+                <configuration>
+                    <tagBase>
+                        https://github.com/Rainfisher/octopus/tags
+                    </tagBase>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
