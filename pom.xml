@@ -102,7 +102,7 @@
                         <configuration>
                             <outputDirectory>${project.build.directory}/lib</outputDirectory>
                             <excludeTransitive>false</excludeTransitive>
-                            <stripVersion>true</stripVersion>
+                            <stripVersion>false</stripVersion>
                         </configuration>
                     </execution>
                 </executions>

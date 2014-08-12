@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.impl.StdSchedulerFactory;
 
 /**
  *
@@ -79,6 +82,12 @@ class ContextImpl implements Context {
     public void run() {
         for (OctopusListener octopusListener : listeners) {
             octopusListener.onDestroy(this);
+        }
+        try {
+            Scheduler sched = StdSchedulerFactory.getDefaultScheduler();
+            sched.shutdown();
+        }
+        catch (SchedulerException e) {
         }
     }
 
