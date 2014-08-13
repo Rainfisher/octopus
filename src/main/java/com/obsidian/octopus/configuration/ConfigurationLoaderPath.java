@@ -28,8 +28,10 @@ public class ConfigurationLoaderPath extends ConfigurationLoaderFile {
         File[] files = file.listFiles(filter);
         for (File tmp : files) {
             Object object = processFile(tmp);
-            String name = _getName(tmp);
-            save(name, object);
+            if (object != null) {
+                String name = _getName(tmp);
+                save(name, object);
+            }
         }
     }
 

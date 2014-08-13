@@ -28,7 +28,9 @@ public class ConfigurationLoaderFile extends ConfigurationLoader {
     @Override
     public void process() throws Exception {
         Object object = processFile(file);
-        save(_getName(), object);
+        if (object != null) {
+            save(_getName(), object);
+        }
     }
 
     private String _getName() {
