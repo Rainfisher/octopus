@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FilenameFilter;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.ArrayUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -30,7 +28,7 @@ public class ConfigurationLoaderPath extends ConfigurationLoaderFile {
         File[] files = file.listFiles(filter);
         for (File tmp : files) {
             Object object = processFile(tmp);
-            String name = _getName(file);
+            String name = _getName(tmp);
             save(name, object);
         }
     }

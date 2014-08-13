@@ -3,8 +3,6 @@ package com.obsidian.octopus.configuration;
 import com.obsidian.octopus.ioc.IocInstanceProvider;
 import com.obsidian.octopus.resolver.ConfigResolver;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,12 +17,10 @@ public abstract class ConfigurationLoader {
     protected final ConfigResolver configResolver;
     protected final File file;
     protected IocInstanceProvider iocInstanceProvider;
-    protected final Map<String, Long> loadingTimestamp;
 
     public ConfigurationLoader(ConfigResolver configResolver, File file) {
         this.configResolver = configResolver;
         this.file = file;
-        this.loadingTimestamp = new HashMap<>();
     }
 
     public void setIocInstanceProvider(IocInstanceProvider iocInstanceProvider) {

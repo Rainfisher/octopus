@@ -4,6 +4,8 @@ import com.obsidian.octopus.configuration.type.ConfigurationTypeInterface;
 import com.obsidian.octopus.configuration.type.ConfigurationTypeManager;
 import com.obsidian.octopus.resolver.ConfigResolver;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +18,11 @@ public class ConfigurationLoaderFile extends ConfigurationLoader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationLoaderFile.class);
 
+    protected final Map<String, Long> loadingTimestamp;
+
     public ConfigurationLoaderFile(ConfigResolver configResolver, File file) {
         super(configResolver, file);
+        this.loadingTimestamp = new HashMap<>();
     }
 
     @Override

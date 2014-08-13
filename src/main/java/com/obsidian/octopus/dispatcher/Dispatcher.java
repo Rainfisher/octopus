@@ -167,9 +167,6 @@ public abstract class Dispatcher {
         }
 
         private void _contextConfig() throws Exception {
-            IocInstanceProvider iocProvide = context.getIocProvide();
-
-            boolean hotload = false;
             Map<ConfigResolver, ConfigurationLoader> map = context.getConfigurationLoaderMap();
             for (Map.Entry<ConfigResolver, ConfigurationLoader> entry : map.entrySet()) {
                 ConfigResolver configResolver = entry.getKey();
@@ -178,21 +175,9 @@ public abstract class Dispatcher {
                     if (BooleanUtils.isTrue(configResolver.isLoadOnStart())) {
                         loader.process();
                     }
-                    hotload = true;
                 } else {
                     loader.process();
                 }
-            }
-
-            for (Map.Entry<ConfigResolver, ConfigurationLoader> entry : map.entrySet()) {
-                ConfigurationLoader loader = entry.getValue();
-                iocProvide.injectMembers(loader);
-
-                loader.triggerCallback(null);
-            }
-
-            if (hotload) {
-                context.getConfigurationHotLoader().start();
             }
         }
 
@@ -202,6 +187,23 @@ public abstract class Dispatcher {
             List<OctopusListener> listeners = context.getListeners();
             for (OctopusListener octopusListener : listeners) {
                 octopusListener.onStart(context);
+            }
+
+            boolean hotload = false;
+            Map<ConfigResolver, ConfigurationLoader> map = context.getConfigurationLoaderMap();
+            for (Map.Entry<ConfigResolver, ConfigurationLoader> entry : map.entrySet()) {
+                ConfigResolver configResolver = entry.getKey();
+                ConfigurationLoader loader = entry.getValue();
+                iocProvide.injectMembers(loader);
+
+                if (BooleanUtils.isTrue(configResolver.isHotLoad())) {
+                    hotload = true;
+                }
+                loader.triggerCallback(null);
+            }
+
+            if (hotload) {
+                context.getConfigurationHotLoader().start();
             }
 
             if (moduleResolver.getQuartzResolver() != null) {
