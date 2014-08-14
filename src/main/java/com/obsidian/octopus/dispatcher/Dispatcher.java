@@ -148,17 +148,17 @@ public abstract class Dispatcher {
                     scheduleBuilder = CronScheduleBuilder.cronSchedule(trigger.getCron());
                 }
 
-                TriggerBuilder triggerBuilder = TriggerBuilder.newTrigger();
-                triggerBuilder.withIdentity(trigger.getName(), quartzResolver.getGroupName());
-                triggerBuilder.startNow();
-                triggerBuilder.withSchedule(scheduleBuilder);
-                Trigger tr = triggerBuilder.build();
-
-                if (trigger.getJobs() != null) {
-                    for (String jobName : trigger.getJobs()) {
+                String[] jobs = trigger.getJobs();
+                if (jobs != null) {
+                    for (int i = 0; i < jobs.length; i++) {
+                        String jobName = jobs[i];
                         JobDetail jobDetail = jobMap.get(jobName);
                         if (jobDetail != null) {
-                            scheduler.scheduleJob(jobDetail, tr);
+                            TriggerBuilder triggerBuilder = TriggerBuilder.newTrigger();
+                            triggerBuilder.withIdentity(trigger.getName() + "-" + i, quartzResolver.getGroupName());
+                            triggerBuilder.startNow();
+                            triggerBuilder.withSchedule(scheduleBuilder);
+                            scheduler.scheduleJob(jobDetail, triggerBuilder.build());
                         }
                     }
                 }
