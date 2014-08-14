@@ -194,7 +194,7 @@ public abstract class Dispatcher {
             for (Map.Entry<ConfigResolver, ConfigurationLoader> entry : map.entrySet()) {
                 ConfigResolver configResolver = entry.getKey();
                 ConfigurationLoader loader = entry.getValue();
-                iocProvide.injectMembers(loader);
+                loader.setIocInstanceProvider(iocProvide);
 
                 if (BooleanUtils.isTrue(configResolver.isHotLoad())) {
                     hotload = true;
