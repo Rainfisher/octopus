@@ -1,10 +1,11 @@
 package com.obsidian.octopus.xml;
 
-import com.obsidian.octopus.resolver.ModuleResolver;
 import com.obsidian.octopus.resolver.Resolver;
+import com.obsidian.octopus.xml.provider.XmlProviderManager;
+import com.obsidian.octopus.xml.provider.XmlProviderModule;
+import com.obsidian.octopus.xml.provider.XmlProviderModuleDefault;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -17,7 +18,7 @@ import org.dom4j.Element;
  */
 public class XmlConfigurationProvider {
 
-    private String moduleName;
+    private final String moduleName;
 
     public XmlConfigurationProvider(String moduleName) {
         this.moduleName = moduleName;
@@ -38,27 +39,6 @@ public class XmlConfigurationProvider {
         return document;
     }
 
-    private void _resolveDefaultModule(Resolver resolver, Element octopus) {
-        if (moduleName == null) {
-            Element defaultModule = octopus.element("default-module");
-            if (defaultModule == null) {
-                throw new NullPointerException("xml parse error: default-module not set");
-            }
-            moduleName = defaultModule.getStringValue();
-        }
-        resolver.setModuleName(moduleName);
-    }
-
-    private void _resolveModules(Resolver resolver, Element octopus)
-            throws Exception {
-        List<Element> elements = octopus.elements("module");
-        for (Element element : elements) {
-            XmlConfigurationModuleProvider xmlModuleResolver = new XmlConfigurationModuleProvider(element);
-            ModuleResolver moduleResolver = xmlModuleResolver.build();
-            resolver.putModule(xmlModuleResolver.getName(), moduleResolver);
-        }
-    }
-
     public Resolver build() throws Exception {
         Document document = _getDocument("/octopus.xml");
         if (document == null) {
@@ -68,10 +48,20 @@ public class XmlConfigurationProvider {
             throw new NullPointerException("cant find octopus.xml");
         }
         Resolver resolver = new Resolver();
+        resolver.setModuleName(moduleName);
+
         Element octopus = document.getRootElement();
-        _resolveDefaultModule(resolver, octopus);
-        _resolveModules(resolver, octopus);
+
+        XmlProviderManager<Resolver> xmlManager = _getXmlManager();
+        xmlManager.reslove(resolver, octopus);
         return resolver;
+    }
+
+    private XmlProviderManager<Resolver> _getXmlManager() {
+        XmlProviderManager<Resolver> manager = new XmlProviderManager<>();
+        manager.register("default-module", new XmlProviderModuleDefault());
+        manager.register("module", new XmlProviderModule());
+        return manager;
     }
 
 }

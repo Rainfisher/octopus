@@ -26,7 +26,6 @@ import org.quartz.JobDetail;
 import org.quartz.ScheduleBuilder;
 import org.quartz.Scheduler;
 import org.quartz.SimpleScheduleBuilder;
-import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
@@ -122,43 +121,45 @@ public abstract class Dispatcher {
 
         private void _processQuartz() throws Exception {
             LOGGER.debug("octopus: process quartz........");
-            QuartzResolver quartzResolver = moduleResolver.getQuartzResolver();
+            List<QuartzResolver> quartzResolvers = moduleResolver.getQuartzResolvers();
 
-            Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
-            Map<String, JobDetail> jobMap = new HashMap<>();
-            for (QuartzResolver.Job job : quartzResolver.getJobs()) {
-                JobBuilder jobBuilder = JobBuilder.newJob(job.getClazz());
-                jobBuilder.withIdentity(job.getName(), quartzResolver.getGroupName());
-                JobDetail jobDetail = jobBuilder.build();
-                jobMap.put(job.getName(), jobDetail);
-            }
-
-            for (QuartzResolver.Trigger trigger : quartzResolver.getTriggers()) {
-                ScheduleBuilder scheduleBuilder;
-                if (trigger.getCron() == null) {
-                    SimpleScheduleBuilder simple = SimpleScheduleBuilder.simpleSchedule();
-                    simple.withIntervalInMilliseconds(trigger.getDelay());
-                    if (trigger.getRepeated() == 0) {
-                        simple.repeatForever();
-                    } else {
-                        simple.withRepeatCount(trigger.getRepeated());
-                    }
-                    scheduleBuilder = simple;
-                } else {
-                    scheduleBuilder = CronScheduleBuilder.cronSchedule(trigger.getCron());
+            for (QuartzResolver quartzResolver : quartzResolvers) {
+                Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+                Map<String, JobDetail> jobMap = new HashMap<>();
+                for (QuartzResolver.Job job : quartzResolver.getJobs()) {
+                    JobBuilder jobBuilder = JobBuilder.newJob(job.getClazz());
+                    jobBuilder.withIdentity(job.getName(), quartzResolver.getGroupName());
+                    JobDetail jobDetail = jobBuilder.build();
+                    jobMap.put(job.getName(), jobDetail);
                 }
 
-                String[] jobs = trigger.getJobs();
-                if (jobs != null) {
-                    for (int i = 0; i < jobs.length; i++) {
-                        String jobName = jobs[i];
-                        JobDetail jobDetail = jobMap.get(jobName);
-                        if (jobDetail != null) {
-                            TriggerBuilder triggerBuilder = TriggerBuilder.newTrigger();
-                            triggerBuilder.withIdentity(trigger.getName() + "-" + i, quartzResolver.getGroupName());
-                            triggerBuilder.startNow();
-                            triggerBuilder.withSchedule(scheduleBuilder);
-                            scheduler.scheduleJob(jobDetail, triggerBuilder.build());
+                for (QuartzResolver.Trigger trigger : quartzResolver.getTriggers()) {
+                    ScheduleBuilder scheduleBuilder;
+                    if (trigger.getCron() == null) {
+                        SimpleScheduleBuilder simple = SimpleScheduleBuilder.simpleSchedule();
+                        simple.withIntervalInMilliseconds(trigger.getDelay());
+                        if (trigger.getRepeated() == 0) {
+                            simple.repeatForever();
+                        } else {
+                            simple.withRepeatCount(trigger.getRepeated());
+                        }
+                        scheduleBuilder = simple;
+                    } else {
+                        scheduleBuilder = CronScheduleBuilder.cronSchedule(trigger.getCron());
+                    }
+
+                    String[] jobs = trigger.getJobs();
+                    if (jobs != null) {
+                        for (int i = 0; i < jobs.length; i++) {
+                            String jobName = jobs[i];
+                            JobDetail jobDetail = jobMap.get(jobName);
+                            if (jobDetail != null) {
+                                TriggerBuilder triggerBuilder = TriggerBuilder.newTrigger();
+                                triggerBuilder.withIdentity(trigger.getName() + "-" + i, quartzResolver.getGroupName());
+                                triggerBuilder.startNow();
+                                triggerBuilder.withSchedule(scheduleBuilder);
+                                scheduler.scheduleJob(jobDetail, triggerBuilder.build());
+                            }
                         }
                     }
                 }
@@ -206,7 +207,7 @@ public abstract class Dispatcher {
                 context.getConfigurationHotLoader().start();
             }
 
-            if (moduleResolver.getQuartzResolver() != null) {
+            if (!moduleResolver.getQuartzResolvers().isEmpty()) {
                 Scheduler sched = StdSchedulerFactory.getDefaultScheduler();
                 sched.setJobFactory(new GuiceJobFactory(iocProvide));
                 sched.start();

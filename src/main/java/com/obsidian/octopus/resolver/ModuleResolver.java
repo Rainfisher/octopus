@@ -1,5 +1,6 @@
 package com.obsidian.octopus.resolver;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,18 +9,25 @@ import java.util.List;
  */
 public class ModuleResolver {
 
-    private List<ConfigResolver> configResolvers;
+    private final List<ConfigResolver> configResolvers;
     private IocResolver iocResolver;
-    private List<ListenerResolver> listenerResolvers;
-    private List<FilterResolver> filterResolvers;
-    private QuartzResolver quartzResolver;
+    private final List<ListenerResolver> listenerResolvers;
+    private final List<FilterResolver> filterResolvers;
+    private final List<QuartzResolver> quartzResolvers;
+
+    public ModuleResolver() {
+        this.configResolvers = new ArrayList<>();
+        this.listenerResolvers = new ArrayList<>();
+        this.filterResolvers = new ArrayList<>();
+        this.quartzResolvers = new ArrayList<>();
+    }
 
     public List<ConfigResolver> getConfigResolvers() {
         return configResolvers;
     }
 
-    public void setConfigResolvers(List<ConfigResolver> configResolvers) {
-        this.configResolvers = configResolvers;
+    public void addConfigResolver(ConfigResolver configResolver) {
+        this.configResolvers.add(configResolver);
     }
 
     public IocResolver getIocResolver() {
@@ -34,24 +42,24 @@ public class ModuleResolver {
         return listenerResolvers;
     }
 
-    public void setListenerResolvers(List<ListenerResolver> listenerResolvers) {
-        this.listenerResolvers = listenerResolvers;
+    public void addListenerResolver(ListenerResolver listenerResolver) {
+        this.listenerResolvers.add(listenerResolver);
     }
 
     public List<FilterResolver> getFilterResolvers() {
         return filterResolvers;
     }
 
-    public void setFilterResolvers(List<FilterResolver> filterResolvers) {
-        this.filterResolvers = filterResolvers;
+    public void addFilterResolver(FilterResolver filterResolver) {
+        this.filterResolvers.add(filterResolver);
     }
 
-    public void setQuartzResolver(QuartzResolver quartzResolver) {
-        this.quartzResolver = quartzResolver;
+    public List<QuartzResolver> getQuartzResolvers() {
+        return quartzResolvers;
     }
 
-    public QuartzResolver getQuartzResolver() {
-        return quartzResolver;
+    public void addQuartzResolver(QuartzResolver quartzResolver) {
+        this.quartzResolvers.add(quartzResolver);
     }
 
 }
