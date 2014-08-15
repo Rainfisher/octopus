@@ -7,16 +7,12 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.io.FilenameUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Alex Chou <xi.zhou at obsidian>
  */
 public class ConfigurationLoaderFile extends ConfigurationLoader {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationLoaderFile.class);
 
     protected final Map<String, Long> loadingTimestamp;
 

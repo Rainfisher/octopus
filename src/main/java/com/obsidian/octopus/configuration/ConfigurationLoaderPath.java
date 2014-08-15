@@ -34,6 +34,8 @@ public class ConfigurationLoaderPath extends ConfigurationLoaderFile {
             if (object != null) {
                 String name = _getName(tmp);
                 datas.put(name, object);
+
+                LOGGER.debug("octopus configuration:{} loading to memcache", name);
             }
         }
         for (Map.Entry<String, Object> entry : datas.entrySet()) {

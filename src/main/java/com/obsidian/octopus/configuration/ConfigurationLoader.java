@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class ConfigurationLoader {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationLoader.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationLoader.class);
 
     protected final ConfigResolver configResolver;
     protected final File file;
