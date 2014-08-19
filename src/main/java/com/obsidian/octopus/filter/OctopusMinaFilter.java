@@ -1,6 +1,7 @@
 package com.obsidian.octopus.filter;
 
 import org.apache.mina.core.service.IoHandlerAdapter;
+import org.apache.mina.core.session.IoSession;
 
 /**
  *
@@ -16,6 +17,10 @@ public class OctopusMinaFilter extends IoHandlerAdapter {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
     }
 
 }

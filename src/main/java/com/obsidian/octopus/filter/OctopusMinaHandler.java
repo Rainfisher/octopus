@@ -31,7 +31,6 @@ public class OctopusMinaHandler extends IoHandlerAdapter {
 
     @Override
     public void sessionCreated(IoSession session) throws Exception {
-        super.sessionCreated(session);
         for (OctopusMinaFilter octopusMinaFilter : filters) {
             octopusMinaFilter.sessionCreated(session);
         }
@@ -39,7 +38,6 @@ public class OctopusMinaHandler extends IoHandlerAdapter {
 
     @Override
     public void sessionOpened(IoSession session) throws Exception {
-        super.sessionOpened(session);
         for (OctopusMinaFilter octopusMinaFilter : filters) {
             octopusMinaFilter.sessionOpened(session);
         }
@@ -47,7 +45,6 @@ public class OctopusMinaHandler extends IoHandlerAdapter {
 
     @Override
     public void sessionClosed(IoSession session) throws Exception {
-        super.sessionClosed(session);
         for (OctopusMinaFilter octopusMinaFilter : filters) {
             octopusMinaFilter.sessionClosed(session);
         }
@@ -55,7 +52,6 @@ public class OctopusMinaHandler extends IoHandlerAdapter {
 
     @Override
     public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
-        super.sessionIdle(session, status);
         for (OctopusMinaFilter octopusMinaFilter : filters) {
             octopusMinaFilter.sessionIdle(session, status);
         }
@@ -63,7 +59,6 @@ public class OctopusMinaHandler extends IoHandlerAdapter {
 
     @Override
     public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
-        super.exceptionCaught(session, cause);
         for (OctopusMinaFilter octopusMinaFilter : filters) {
             octopusMinaFilter.exceptionCaught(session, cause);
         }
@@ -71,7 +66,6 @@ public class OctopusMinaHandler extends IoHandlerAdapter {
 
     @Override
     public void messageReceived(IoSession session, Object message) throws Exception {
-        super.messageReceived(session, message);
         for (OctopusMinaFilter octopusMinaFilter : filters) {
             octopusMinaFilter.messageReceived(session, message);
         }
@@ -79,7 +73,6 @@ public class OctopusMinaHandler extends IoHandlerAdapter {
 
     @Override
     public void messageSent(IoSession session, Object message) throws Exception {
-        super.messageSent(session, message);
         for (OctopusMinaFilter octopusMinaFilter : filters) {
             octopusMinaFilter.messageSent(session, message);
         }
