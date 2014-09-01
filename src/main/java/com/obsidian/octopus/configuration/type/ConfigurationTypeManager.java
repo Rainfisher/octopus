@@ -14,6 +14,7 @@ public class ConfigurationTypeManager {
     static {
         register("properties", new ConfigurationTypeProperties());
         register("json", new ConfigurationTypeJson());
+        register("json-array", new ConfigurationTypeJsonArray());
     }
 
     public static final void register(String type, ConfigurationTypeInterface instance) {
