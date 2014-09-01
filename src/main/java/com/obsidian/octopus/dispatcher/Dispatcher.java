@@ -208,7 +208,7 @@ public abstract class Dispatcher {
             }
 
             if (!moduleResolver.getQuartzResolvers().isEmpty()) {
-                Scheduler sched = StdSchedulerFactory.getDefaultScheduler();
+                Scheduler sched = context.getScheduler(true);
                 sched.setJobFactory(new GuiceJobFactory(iocProvide));
                 sched.start();
             }

@@ -25,6 +25,7 @@ class ContextImpl implements Context {
     private IocInstanceProvider iocProvide;
     private final List<OctopusListener> listeners;
     private final List<OctopusMinaFilter> filters;
+    private Scheduler scheduler;
 
     public ContextImpl() {
         configurationLoaderMap = new HashMap<>();
@@ -79,15 +80,25 @@ class ContextImpl implements Context {
     }
 
     @Override
+    public Scheduler getScheduler(boolean init)
+            throws SchedulerException {
+        if (init && scheduler == null) {
+            scheduler = StdSchedulerFactory.getDefaultScheduler();
+        }
+        return scheduler;
+    }
+
+    @Override
     public void run() {
         for (OctopusListener octopusListener : listeners) {
             octopusListener.onDestroy(this);
         }
-        try {
-            Scheduler sched = StdSchedulerFactory.getDefaultScheduler();
-            sched.shutdown();
-        }
-        catch (SchedulerException e) {
+        if (scheduler != null) {
+            try {
+                scheduler.shutdown();
+            }
+            catch (SchedulerException e) {
+            }
         }
     }
 
