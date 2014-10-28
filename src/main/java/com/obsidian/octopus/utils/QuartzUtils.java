@@ -12,7 +12,7 @@ import org.quartz.impl.StdSchedulerFactory;
  */
 public class QuartzUtils {
 
-    public static void ss(JobDetail jobDetail, Trigger trigger)
+    public static void scheduleJob(JobDetail jobDetail, Trigger trigger)
             throws SchedulerException {
         Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
         scheduler.scheduleJob(jobDetail, trigger);

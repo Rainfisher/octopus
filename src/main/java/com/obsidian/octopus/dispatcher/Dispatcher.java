@@ -158,7 +158,7 @@ public abstract class Dispatcher {
                                 triggerBuilder.withIdentity(trigger.getName() + "-" + i, quartzResolver.getGroupName());
                                 triggerBuilder.startNow();
                                 triggerBuilder.withSchedule(scheduleBuilder);
-                                QuartzUtils.ss(jobDetail, triggerBuilder.build());
+                                QuartzUtils.scheduleJob(jobDetail, triggerBuilder.build());
                             }
                         }
                     }
