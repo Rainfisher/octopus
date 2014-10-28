@@ -16,6 +16,7 @@ import com.obsidian.octopus.resolver.ListenerResolver;
 import com.obsidian.octopus.resolver.ModuleResolver;
 import com.obsidian.octopus.resolver.QuartzResolver;
 import com.obsidian.octopus.resolver.Resolver;
+import com.obsidian.octopus.utils.QuartzUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -124,7 +125,6 @@ public abstract class Dispatcher {
             List<QuartzResolver> quartzResolvers = moduleResolver.getQuartzResolvers();
 
             for (QuartzResolver quartzResolver : quartzResolvers) {
-                Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
                 Map<String, JobDetail> jobMap = new HashMap<>();
                 for (QuartzResolver.Job job : quartzResolver.getJobs()) {
                     JobBuilder jobBuilder = JobBuilder.newJob(job.getClazz());
@@ -158,7 +158,7 @@ public abstract class Dispatcher {
                                 triggerBuilder.withIdentity(trigger.getName() + "-" + i, quartzResolver.getGroupName());
                                 triggerBuilder.startNow();
                                 triggerBuilder.withSchedule(scheduleBuilder);
-                                scheduler.scheduleJob(jobDetail, triggerBuilder.build());
+                                QuartzUtils.ss(jobDetail, triggerBuilder.build());
                             }
                         }
                     }
@@ -207,12 +207,9 @@ public abstract class Dispatcher {
                 context.getConfigurationHotLoader().start();
             }
 
-            if (!moduleResolver.getQuartzResolvers().isEmpty()) {
-                Scheduler sched = context.getScheduler(true);
-                sched.setJobFactory(new GuiceJobFactory(iocProvide));
-                sched.start();
-            }
-
+            Scheduler sched = context.getScheduler(true);
+            sched.setJobFactory(new GuiceJobFactory(iocProvide));
+            sched.start();
         }
 
     }
