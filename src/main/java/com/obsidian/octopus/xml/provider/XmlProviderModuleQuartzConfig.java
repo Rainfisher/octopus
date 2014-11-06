@@ -12,7 +12,7 @@ public class XmlProviderModuleQuartzConfig implements XmlProviderInterface<Modul
     @Override
     public void process(ModuleResolver resolver, Element element)
             throws Exception {
-        System.setProperty("org.quartz.properties", element.getStringValue());
+        resolver.setQuartzConfig(element.getStringValue());
     }
 
 }

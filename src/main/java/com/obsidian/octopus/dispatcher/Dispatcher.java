@@ -28,7 +28,6 @@ import org.quartz.ScheduleBuilder;
 import org.quartz.Scheduler;
 import org.quartz.SimpleScheduleBuilder;
 import org.quartz.TriggerBuilder;
-import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -122,6 +121,7 @@ public abstract class Dispatcher {
 
         private void _processQuartz() throws Exception {
             LOGGER.debug("octopus: process quartz........");
+            System.setProperty("org.quartz.properties", moduleResolver.getQuartzConfig());
             List<QuartzResolver> quartzResolvers = moduleResolver.getQuartzResolvers();
 
             for (QuartzResolver quartzResolver : quartzResolvers) {
