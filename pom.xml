@@ -29,12 +29,12 @@
         <repository>
             <id>releases</id>
             <name>Internal Releases</name>
-            <url>http://git.obsidian-interactive.com:8081/nexus/content/repositories/releases</url>
+            <url>http://nexus.obsidian-interactive.com:8081/nexus/content/repositories/releases</url>
         </repository>
         <snapshotRepository>
             <id>Snapshots</id>
             <name>Internal Snapshots</name>
-            <url>http://git.obsidian-interactive.com:8081/nexus/content/repositories/snapshots</url>
+            <url>http://nexus.obsidian-interactive.com:8081/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -45,14 +45,14 @@
             </snapshots>
             <id>public</id>
             <name>Public Repositories</name>
-            <url>http://git.obsidian-interactive.com:8081/nexus/content/groups/public/</url>
+            <url>http://nexus.obsidian-interactive.com:8081/nexus/content/groups/public/</url>
         </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
             <id>public</id>
             <name>Public Repositories</name>
-            <url>http://git.obsidian-interactive.com:8081/nexus/content/groups/public/</url>
+            <url>http://nexus.obsidian-interactive.com:8081/nexus/content/groups/public/</url>
         </pluginRepository>
     </pluginRepositories>
 
