@@ -33,7 +33,7 @@ public abstract class ConfigurationLoader {
         ConfigurationManager manager = ConfigurationManager.getInstance();
         manager.putConfiguration(name, data);
         triggerCallback(data);
-        LOGGER.debug("octopus configuration:{} loading success", name);
+        LOGGER.info("octopus configuration:{} loading success", name);
     }
 
     public abstract void triggerCallback(Object data);

@@ -121,7 +121,9 @@ public abstract class Dispatcher {
 
         private void _processQuartz() throws Exception {
             LOGGER.debug("octopus: process quartz........");
-            System.setProperty("org.quartz.properties", moduleResolver.getQuartzConfig());
+            if (moduleResolver.getQuartzConfig() != null) {
+                System.setProperty("org.quartz.properties", moduleResolver.getQuartzConfig());
+            }
             List<QuartzResolver> quartzResolvers = moduleResolver.getQuartzResolvers();
 
             for (QuartzResolver quartzResolver : quartzResolvers) {

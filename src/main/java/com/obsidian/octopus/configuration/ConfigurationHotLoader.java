@@ -2,12 +2,16 @@ package com.obsidian.octopus.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Alex Chou <xi.zhou at obsidian>
  */
 public class ConfigurationHotLoader extends Thread {
+
+    protected static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationHotLoader.class);
 
     private final List<ConfigurationLoader> loaderList;
 
@@ -30,7 +34,7 @@ public class ConfigurationHotLoader extends Thread {
                 Thread.sleep(1000);
             }
             catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.error("octopus: hotload failed", e);
             }
         }
     }
