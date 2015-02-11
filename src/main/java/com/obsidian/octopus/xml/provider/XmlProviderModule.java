@@ -27,6 +27,7 @@ public class XmlProviderModule implements XmlProviderInterface<Resolver> {
 
     private XmlProviderManager<ModuleResolver> _getManager() {
         XmlProviderManager<ModuleResolver> manager = new XmlProviderManager<>();
+        manager.register("log4j", new XmlProviderModuleLog4j());
         manager.register("config", new XmlProviderModuleConfig());
         manager.register("ioc", new XmlProviderModuleIoc());
         manager.register("listener", new XmlProviderModuleListener());

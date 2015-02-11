@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.log4j.PropertyConfigurator;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -54,6 +55,7 @@ public abstract class Dispatcher {
         public void start(Resolver resolver) throws Exception {
             moduleResolver = resolver.getModuleResolver();
             context = ContextProvider.getInstance();
+            _processLog4j();
             _processConfig();
 
             _contextConfig();
@@ -64,6 +66,14 @@ public abstract class Dispatcher {
             _processQuartz();
 
             _contextStart();
+        }
+        
+        private void _processLog4j() {
+            LOGGER.debug("octopus: process log4j........");
+            String log4j = moduleResolver.getLog4j();
+            if (log4j != null) {
+                PropertyConfigurator.configure(log4j);
+            }
         }
 
         private void _processConfig() throws Exception {

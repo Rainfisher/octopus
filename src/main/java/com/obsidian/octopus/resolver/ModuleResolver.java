@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class ModuleResolver {
 
+    private String log4j;
     private final List<ConfigResolver> configResolvers;
     private IocResolver iocResolver;
     private final List<ListenerResolver> listenerResolvers;
@@ -21,6 +22,14 @@ public class ModuleResolver {
         this.listenerResolvers = new ArrayList<>();
         this.filterResolvers = new ArrayList<>();
         this.quartzResolvers = new ArrayList<>();
+    }
+
+    public String getLog4j() {
+        return log4j;
+    }
+
+    public void setLog4j(String log4j) {
+        this.log4j = log4j;
     }
 
     public List<ConfigResolver> getConfigResolvers() {
