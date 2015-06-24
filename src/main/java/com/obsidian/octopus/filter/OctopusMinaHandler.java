@@ -32,28 +32,48 @@ public class OctopusMinaHandler extends IoHandlerAdapter {
     @Override
     public void sessionCreated(IoSession session) throws Exception {
         for (OctopusMinaFilter octopusMinaFilter : filters) {
-            octopusMinaFilter.sessionCreated(session);
+            try {
+                octopusMinaFilter.sessionCreated(session);
+            }
+            catch (Exception e) {
+                octopusMinaFilter.exceptionCaught(session, e);
+            }
         }
     }
 
     @Override
     public void sessionOpened(IoSession session) throws Exception {
         for (OctopusMinaFilter octopusMinaFilter : filters) {
-            octopusMinaFilter.sessionOpened(session);
+            try {
+                octopusMinaFilter.sessionOpened(session);
+            }
+            catch (Exception e) {
+                octopusMinaFilter.exceptionCaught(session, e);
+            }
         }
     }
 
     @Override
     public void sessionClosed(IoSession session) throws Exception {
         for (OctopusMinaFilter octopusMinaFilter : filters) {
-            octopusMinaFilter.sessionClosed(session);
+            try {
+                octopusMinaFilter.sessionClosed(session);
+            }
+            catch (Exception e) {
+                octopusMinaFilter.exceptionCaught(session, e);
+            }
         }
     }
 
     @Override
     public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
         for (OctopusMinaFilter octopusMinaFilter : filters) {
-            octopusMinaFilter.sessionIdle(session, status);
+            try {
+                octopusMinaFilter.sessionIdle(session, status);
+            }
+            catch (Exception e) {
+                octopusMinaFilter.exceptionCaught(session, e);
+            }
         }
     }
 
@@ -67,14 +87,24 @@ public class OctopusMinaHandler extends IoHandlerAdapter {
     @Override
     public void messageReceived(IoSession session, Object message) throws Exception {
         for (OctopusMinaFilter octopusMinaFilter : filters) {
-            octopusMinaFilter.messageReceived(session, message);
+            try {
+                octopusMinaFilter.messageReceived(session, message);
+            }
+            catch (Exception e) {
+                octopusMinaFilter.exceptionCaught(session, e);
+            }
         }
     }
 
     @Override
     public void messageSent(IoSession session, Object message) throws Exception {
         for (OctopusMinaFilter octopusMinaFilter : filters) {
-            octopusMinaFilter.messageSent(session, message);
+            try {
+                octopusMinaFilter.messageSent(session, message);
+            }
+            catch (Exception e) {
+                octopusMinaFilter.exceptionCaught(session, e);
+            }
         }
     }
 

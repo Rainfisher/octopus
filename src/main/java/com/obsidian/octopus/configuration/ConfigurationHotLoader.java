@@ -27,14 +27,18 @@ public class ConfigurationHotLoader extends Thread {
     @Override
     public void run() {
         while (true) {
-            try {
-                for (ConfigurationLoader configurationLoader : loaderList) {
+            for (ConfigurationLoader configurationLoader : loaderList) {
+                try {
                     configurationLoader.process();
                 }
+                catch (Exception e) {
+                    LOGGER.error("octopus: hotload failed", e);
+                }
+            }
+            try {
                 Thread.sleep(1000);
             }
             catch (Exception e) {
-                LOGGER.error("octopus: hotload failed", e);
             }
         }
     }
