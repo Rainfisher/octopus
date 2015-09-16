@@ -23,9 +23,9 @@ public class ConfigurationLoaderFile extends ConfigurationLoader {
 
     @Override
     public void process() throws Exception {
-        Object object = processFile(file);
+        Object object = processFile(file, true);
         if (object != null) {
-            save(_getName(), object);
+            save(_getName(), object, true);
         }
     }
 
@@ -37,10 +37,10 @@ public class ConfigurationLoaderFile extends ConfigurationLoader {
         return name;
     }
 
-    protected Object processFile(File file) throws Exception {
+    protected Object processFile(File file, boolean checkTime) throws Exception {
         String fileName = file.getName();
         long lastModified = file.lastModified();
-        if (loadingTimestamp.containsKey(fileName)
+        if (checkTime && loadingTimestamp.containsKey(fileName)
                 && loadingTimestamp.get(fileName) == lastModified) {
             return null;
         }
@@ -63,6 +63,14 @@ public class ConfigurationLoaderFile extends ConfigurationLoader {
             if (data != null) {
                 instance.trigger(data);
             }
+        }
+    }
+
+    @Override
+    public void reload() throws Exception {
+        Object object = processFile(file, false);
+        if (object != null) {
+            save(_getName(), object, false);
         }
     }
 

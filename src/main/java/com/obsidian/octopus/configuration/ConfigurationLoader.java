@@ -29,13 +29,17 @@ public abstract class ConfigurationLoader {
 
     public abstract void process() throws Exception;
 
-    protected void save(String name, Object data) throws InstantiationException, IllegalAccessException {
+    protected void save(String name, Object data, boolean trigger) throws InstantiationException, IllegalAccessException {
         ConfigurationManager manager = ConfigurationManager.getInstance();
         manager.putConfiguration(name, data);
-        triggerCallback(data);
+        if (trigger) {
+            triggerCallback(data);
+        }
         LOGGER.info("octopus configuration:{} loading success", name);
     }
 
     public abstract void triggerCallback(Object data);
+
+    public abstract void reload() throws Exception;
 
 }

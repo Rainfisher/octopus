@@ -30,7 +30,7 @@ public class ConfigurationLoaderPath extends ConfigurationLoaderFile {
         };
         File[] files = file.listFiles(filter);
         for (File tmp : files) {
-            Object object = processFile(tmp);
+            Object object = processFile(tmp, true);
             if (object != null) {
                 String name = _getName(tmp);
                 datas.put(name, object);
@@ -39,7 +39,32 @@ public class ConfigurationLoaderPath extends ConfigurationLoaderFile {
             }
         }
         for (Map.Entry<String, Object> entry : datas.entrySet()) {
-            save(entry.getKey(), entry.getValue());
+            save(entry.getKey(), entry.getValue(), true);
+        }
+    }
+
+    @Override
+    public void reload() throws Exception {
+        Map<String, Object> datas = new HashMap<>();
+        FilenameFilter filter = new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                String extension = FilenameUtils.getExtension(name);
+                return ArrayUtils.contains(configResolver.getExtensions(), extension);
+            }
+        };
+        File[] files = file.listFiles(filter);
+        for (File tmp : files) {
+            Object object = processFile(tmp, false);
+            if (object != null) {
+                String name = _getName(tmp);
+                datas.put(name, object);
+
+                LOGGER.debug("octopus configuration:{} loading to memcache", name);
+            }
+        }
+        for (Map.Entry<String, Object> entry : datas.entrySet()) {
+            save(entry.getKey(), entry.getValue(), false);
         }
     }
 
