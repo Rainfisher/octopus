@@ -15,6 +15,8 @@ public class ConfigurationTypeManager {
         register("properties", new ConfigurationTypeProperties());
         register("json", new ConfigurationTypeJson());
         register("json-array", new ConfigurationTypeJsonArray());
+        register("fastjson", new ConfigurationTypeFastJson());
+        register("fastjson-array", new ConfigurationTypeFastArray());
     }
 
     public static final void register(String type, ConfigurationTypeInterface instance) {

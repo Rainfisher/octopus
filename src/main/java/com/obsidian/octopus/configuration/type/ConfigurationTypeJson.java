@@ -1,8 +1,9 @@
 package com.obsidian.octopus.configuration.type;
 
-import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
-import org.apache.commons.io.FileUtils;
+import java.util.Map;
+import net.sf.json.JSONObject;
 
 /**
  *
@@ -12,8 +13,9 @@ public class ConfigurationTypeJson implements ConfigurationTypeInterface {
 
     @Override
     public Object parse(File file) throws Exception {
-        String text = FileUtils.readFileToString(file);
-        return JSONObject.parseObject(text);
+        ObjectMapper mapper = new ObjectMapper();
+        Map readValue = mapper.readValue(file, Map.class);
+        return JSONObject.fromObject(readValue);
     }
 
 }

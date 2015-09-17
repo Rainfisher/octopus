@@ -1,8 +1,9 @@
 package com.obsidian.octopus.configuration.type;
 
-import com.alibaba.fastjson.JSONArray;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
-import org.apache.commons.io.FileUtils;
+import java.util.List;
+import net.sf.json.JSONArray;
 
 /**
  *
@@ -12,8 +13,9 @@ public class ConfigurationTypeJsonArray implements ConfigurationTypeInterface {
 
     @Override
     public Object parse(File file) throws Exception {
-        String text = FileUtils.readFileToString(file);
-        return JSONArray.parseArray(text);
+        ObjectMapper mapper = new ObjectMapper();
+        List readValue = mapper.readValue(file, List.class);
+        return JSONArray.fromObject(readValue);
     }
 
 }
