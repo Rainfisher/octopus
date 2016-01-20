@@ -10,7 +10,7 @@ import org.apache.commons.lang.ArrayUtils;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public class ConfigurationLoaderPath extends ConfigurationLoaderFile {
 

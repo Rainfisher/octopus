@@ -7,7 +7,7 @@ import net.sf.json.JSONArray;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public class ConfigurationTypeJsonArray implements ConfigurationTypeInterface {
 

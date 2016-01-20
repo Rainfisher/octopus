@@ -10,7 +10,7 @@ import org.quartz.spi.TriggerFiredBundle;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public class GuiceJobFactory extends SimpleJobFactory {
 

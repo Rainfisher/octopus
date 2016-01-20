@@ -2,7 +2,7 @@ package com.obsidian.octopus.ioc;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public interface IocInstanceProvider {
 

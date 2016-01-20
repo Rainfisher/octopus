@@ -6,7 +6,7 @@ import org.apache.commons.io.FileUtils;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public class ConfigurationTypeFastArray implements ConfigurationTypeInterface {
 

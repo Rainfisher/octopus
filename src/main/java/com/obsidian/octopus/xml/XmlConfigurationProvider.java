@@ -14,7 +14,7 @@ import org.dom4j.Element;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public class XmlConfigurationProvider {
 

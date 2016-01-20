@@ -5,7 +5,7 @@ import org.apache.mina.core.session.IoSession;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public class OctopusMinaFilter extends IoHandlerAdapter {
 

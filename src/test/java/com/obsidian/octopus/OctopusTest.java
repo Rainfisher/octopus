@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public class OctopusTest {
 

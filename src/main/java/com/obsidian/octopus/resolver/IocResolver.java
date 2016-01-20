@@ -2,7 +2,7 @@ package com.obsidian.octopus.resolver;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public class IocResolver {
 

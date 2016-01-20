@@ -4,7 +4,7 @@ import com.google.inject.Injector;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public abstract class IocGuiceProvider implements IocInstanceProvider {
 

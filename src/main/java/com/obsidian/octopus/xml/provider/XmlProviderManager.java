@@ -7,8 +7,8 @@ import org.dom4j.Element;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
- * @param <E>
+ * @author Alex Chou
+ * @param <E> element
  */
 public class XmlProviderManager<E> {
 

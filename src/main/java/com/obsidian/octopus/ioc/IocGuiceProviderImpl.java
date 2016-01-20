@@ -6,7 +6,7 @@ import com.obsidian.octopus.ioc.IocGuiceProvider;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public class IocGuiceProviderImpl extends IocGuiceProvider {
 

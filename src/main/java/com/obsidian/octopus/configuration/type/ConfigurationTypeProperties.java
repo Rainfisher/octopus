@@ -6,7 +6,7 @@ import java.util.Properties;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public class ConfigurationTypeProperties implements ConfigurationTypeInterface {
 

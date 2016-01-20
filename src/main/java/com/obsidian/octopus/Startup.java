@@ -5,7 +5,7 @@ import com.obsidian.octopus.xml.XmlConfigurationProvider;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public class Startup {
 

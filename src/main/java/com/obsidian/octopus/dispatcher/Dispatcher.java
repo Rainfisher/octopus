@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public abstract class Dispatcher {
 

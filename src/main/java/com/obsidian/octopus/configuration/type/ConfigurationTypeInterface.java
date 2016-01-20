@@ -4,7 +4,7 @@ import java.io.File;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public interface ConfigurationTypeInterface {
 

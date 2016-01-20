@@ -2,7 +2,7 @@ package com.obsidian.octopus.context;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public class ContextProvider {
 

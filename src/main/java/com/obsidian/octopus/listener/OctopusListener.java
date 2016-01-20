@@ -4,7 +4,7 @@ import com.obsidian.octopus.context.Context;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public class OctopusListener {
 

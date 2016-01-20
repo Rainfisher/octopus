@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public class Octopus {
 

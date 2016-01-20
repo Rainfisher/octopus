@@ -16,7 +16,7 @@ import org.quartz.impl.StdSchedulerFactory;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 class ContextImpl implements Context {
 

@@ -7,7 +7,7 @@ import net.sf.json.JSONObject;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public class ConfigurationTypeJson implements ConfigurationTypeInterface {
 
