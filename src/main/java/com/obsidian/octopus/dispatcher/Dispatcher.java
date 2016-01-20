@@ -16,6 +16,7 @@ import com.obsidian.octopus.resolver.ListenerResolver;
 import com.obsidian.octopus.resolver.ModuleResolver;
 import com.obsidian.octopus.resolver.QuartzResolver;
 import com.obsidian.octopus.resolver.Resolver;
+import com.obsidian.octopus.utils.FileUtils;
 import com.obsidian.octopus.utils.QuartzUtils;
 import java.util.HashMap;
 import java.util.List;
@@ -67,11 +68,12 @@ public abstract class Dispatcher {
 
             _contextStart();
         }
-        
+
         private void _processLog4j() {
             LOGGER.debug("octopus: process log4j........");
             String log4j = moduleResolver.getLog4j();
             if (log4j != null) {
+                log4j = FileUtils.getReplacePath(log4j);
                 PropertyConfigurator.configure(log4j);
             }
         }
@@ -219,9 +221,11 @@ public abstract class Dispatcher {
                 context.getConfigurationHotLoader().start();
             }
 
-            Scheduler sched = context.getScheduler(true);
-            sched.setJobFactory(new GuiceJobFactory(iocProvide));
-            sched.start();
+            if (System.getProperty("org.quartz.properties") != null) {
+                Scheduler sched = context.getScheduler(true);
+                sched.setJobFactory(new GuiceJobFactory(iocProvide));
+                sched.start();
+            }
         }
 
     }

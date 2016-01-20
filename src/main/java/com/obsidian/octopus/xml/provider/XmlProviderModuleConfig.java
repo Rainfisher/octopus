@@ -4,8 +4,6 @@ import com.obsidian.octopus.resolver.ConfigResolver;
 import com.obsidian.octopus.resolver.ModuleResolver;
 import com.obsidian.octopus.utils.FileUtils;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 import org.apache.commons.beanutils.BeanUtils;
 import org.dom4j.Element;
 
