@@ -188,10 +188,10 @@ public abstract class Dispatcher {
                 ConfigurationLoader loader = entry.getValue();
                 if (BooleanUtils.isTrue(configResolver.isHotLoad())) {
                     if (BooleanUtils.isTrue(configResolver.isLoadOnStart())) {
-                        loader.process();
+                        loader.reload();
                     }
                 } else {
-                    loader.process();
+                    loader.reload();
                 }
             }
         }

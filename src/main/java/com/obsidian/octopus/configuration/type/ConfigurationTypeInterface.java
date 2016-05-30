@@ -1,6 +1,6 @@
 package com.obsidian.octopus.configuration.type;
 
-import java.io.File;
+import java.io.InputStream;
 
 /**
  *
@@ -8,6 +8,6 @@ import java.io.File;
  */
 public interface ConfigurationTypeInterface {
 
-    Object parse(File file) throws Exception;
+    Object parse(InputStream inputStream) throws Exception;
 
 }

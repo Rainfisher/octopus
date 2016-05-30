@@ -10,8 +10,9 @@ public class ConfigResolver {
     private String path;
     private String fileType;
     private String[] extensions;
-    private Boolean loadOnStart;
-    private Boolean hotLoad;
+    private Boolean inner = false;
+    private Boolean loadOnStart = false;
+    private Boolean hotLoad = false;
     private Class callback;
 
     public String getName() {
@@ -46,6 +47,14 @@ public class ConfigResolver {
         this.extensions = extensions;
     }
 
+    public Boolean isInner() {
+        return inner;
+    }
+
+    public void setInner(Boolean inner) {
+        this.inner = inner;
+    }
+
     public Boolean isLoadOnStart() {
         return loadOnStart;
     }
@@ -69,4 +78,5 @@ public class ConfigResolver {
     public void setCallback(Class callback) {
         this.callback = callback;
     }
+    
 }

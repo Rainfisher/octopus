@@ -3,7 +3,7 @@ package com.obsidian.octopus.configuration;
 import com.obsidian.octopus.configuration.type.ConfigurationTypeInterface;
 import com.obsidian.octopus.configuration.type.ConfigurationTypeManager;
 import com.obsidian.octopus.resolver.ConfigResolver;
-import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.io.FilenameUtils;
@@ -16,17 +16,25 @@ public class ConfigurationLoaderFile extends ConfigurationLoader {
 
     protected final Map<String, Long> loadingTimestamp;
 
-    public ConfigurationLoaderFile(ConfigResolver configResolver, File file) {
-        super(configResolver, file);
+    public ConfigurationLoaderFile(ConfigResolver configResolver) {
+        super(configResolver);
         this.loadingTimestamp = new HashMap<>();
     }
 
     @Override
-    public void process() throws Exception {
-        Object object = processFile(file, true);
+    public void process(boolean isHotReload) throws Exception {
+        if (isHotReload && !configResolver.isInner()) {
+            String fileName = file.getName();
+            long lastModified = file.lastModified();
+            if (!this.checkTime(fileName, lastModified)) {
+                return;
+            }
+        }
+        Object object = processInputStream(inputStream);
         if (object != null) {
             save(_getName(), object, true);
         }
+
     }
 
     private String _getName() {
@@ -37,17 +45,20 @@ public class ConfigurationLoaderFile extends ConfigurationLoader {
         return name;
     }
 
-    protected Object processFile(File file, boolean checkTime) throws Exception {
-        String fileName = file.getName();
-        long lastModified = file.lastModified();
-        if (checkTime && loadingTimestamp.containsKey(fileName)
-                && loadingTimestamp.get(fileName) == lastModified) {
-            return null;
-        }
+    protected Object processInputStream(InputStream inputStream)
+            throws Exception {
         String fileType = configResolver.getFileType();
         ConfigurationTypeInterface instance = ConfigurationTypeManager.getInstance(fileType);
-        loadingTimestamp.put(file.getName(), lastModified);
-        return instance.parse(file);
+        return instance.parse(inputStream);
+    }
+
+    protected boolean checkTime(String fileName, long lastModified) {
+        if (loadingTimestamp.containsKey(fileName)
+                && loadingTimestamp.get(fileName) == lastModified) {
+            return false;
+        }
+        loadingTimestamp.put(fileName, lastModified);
+        return true;
     }
 
     @Override
@@ -68,10 +79,7 @@ public class ConfigurationLoaderFile extends ConfigurationLoader {
 
     @Override
     public void reload() throws Exception {
-        Object object = processFile(file, false);
-        if (object != null) {
-            save(_getName(), object, false);
-        }
+        this.process(false);
     }
 
 }

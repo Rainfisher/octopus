@@ -2,6 +2,7 @@ package com.obsidian.octopus.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,14 +30,14 @@ public class ConfigurationHotLoader extends Thread {
         while (true) {
             for (ConfigurationLoader configurationLoader : loaderList) {
                 try {
-                    configurationLoader.process();
+                    configurationLoader.process(true);
                 }
                 catch (Exception e) {
                     LOGGER.error("octopus: hotload failed", e);
                 }
             }
             try {
-                Thread.sleep(1000);
+                TimeUnit.SECONDS.sleep(1L);
             }
             catch (Exception e) {
             }

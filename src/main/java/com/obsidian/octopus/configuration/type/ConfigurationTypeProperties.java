@@ -1,7 +1,6 @@
 package com.obsidian.octopus.configuration.type;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Properties;
 
 /**
@@ -11,12 +10,10 @@ import java.util.Properties;
 public class ConfigurationTypeProperties implements ConfigurationTypeInterface {
 
     @Override
-    public Object parse(File file) throws Exception {
-        try (FileInputStream fileInputStream = new FileInputStream(file)) {
-            Properties properties = new Properties();
-            properties.load(fileInputStream);
-            return properties;
-        }
+    public Object parse(InputStream inputStream) throws Exception {
+        Properties properties = new Properties();
+        properties.load(inputStream);
+        return properties;
     }
 
 }

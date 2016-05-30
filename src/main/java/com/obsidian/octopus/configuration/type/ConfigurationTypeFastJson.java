@@ -1,8 +1,8 @@
 package com.obsidian.octopus.configuration.type;
 
 import com.alibaba.fastjson.JSONObject;
-import java.io.File;
-import org.apache.commons.io.FileUtils;
+import java.io.InputStream;
+import org.apache.commons.io.IOUtils;
 
 /**
  *
@@ -11,8 +11,8 @@ import org.apache.commons.io.FileUtils;
 public class ConfigurationTypeFastJson implements ConfigurationTypeInterface {
 
     @Override
-    public Object parse(File file) throws Exception {
-        String text = FileUtils.readFileToString(file);
+    public Object parse(InputStream inputStream) throws Exception {
+        String text = IOUtils.toString(inputStream);
         return JSONObject.parseObject(text);
     }
 

@@ -1,7 +1,7 @@
 package com.obsidian.octopus.configuration.type;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 import net.sf.json.JSONArray;
 
@@ -12,9 +12,9 @@ import net.sf.json.JSONArray;
 public class ConfigurationTypeJsonArray implements ConfigurationTypeInterface {
 
     @Override
-    public Object parse(File file) throws Exception {
+    public Object parse(InputStream inputStream) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        List readValue = mapper.readValue(file, List.class);
+        List readValue = mapper.readValue(inputStream, List.class);
         return JSONArray.fromObject(readValue);
     }
 
