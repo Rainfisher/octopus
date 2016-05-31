@@ -14,6 +14,10 @@ public class Startup {
         if (args != null && args.length > 0) {
             moduleName = args[0];
         }
+        biu(moduleName);
+    }
+
+    public static void biu(String moduleName) throws Exception {
         XmlConfigurationProvider resolver = new XmlConfigurationProvider(moduleName);
         Dispatcher dispatcher = Dispatcher.createDispatcher();
         dispatcher.start(resolver.build());

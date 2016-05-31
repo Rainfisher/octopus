@@ -10,7 +10,7 @@ import java.io.File;
 public class ConfigurationLoaderFactory {
 
     public static ConfigurationLoader build(ConfigResolver configResolver) {
-        Object src = null;
+        Object src;
         ConfigurationLoader loader = null;
 
         if (configResolver.isInner()) {
@@ -36,6 +36,7 @@ public class ConfigurationLoaderFactory {
             return null;
         }
 
+        loader.setConfigResolver(configResolver);
         loader.setSrc(src);
         return loader;
     }
