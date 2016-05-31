@@ -15,21 +15,16 @@ public abstract class ConfigurationLoader {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationLoader.class);
 
-    protected final ConfigResolver configResolver;
-    protected File file;
-    protected InputStream inputStream;
+    protected ConfigResolver configResolver;
+    protected Object src;
     protected IocInstanceProvider iocInstanceProvider;
 
-    public ConfigurationLoader(ConfigResolver configResolver) {
+    public void setConfigResolver(ConfigResolver configResolver) {
         this.configResolver = configResolver;
     }
 
-    public void setFile(File file) {
-        this.file = file;
-    }
-
-    public void setInputStream(InputStream inputStream) {
-        this.inputStream = inputStream;
+    public void setSrc(Object src) {
+        this.src = src;
     }
 
     public void setIocInstanceProvider(IocInstanceProvider iocInstanceProvider) {

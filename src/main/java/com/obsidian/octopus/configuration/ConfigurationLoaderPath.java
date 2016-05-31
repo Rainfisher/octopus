@@ -1,8 +1,6 @@
 package com.obsidian.octopus.configuration;
 
-import com.obsidian.octopus.resolver.ConfigResolver;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,10 +13,6 @@ import org.apache.commons.lang.ArrayUtils;
  */
 public class ConfigurationLoaderPath extends ConfigurationLoaderFile {
 
-    public ConfigurationLoaderPath(ConfigResolver configResolver) {
-        super(configResolver);
-    }
-
     @Override
     public void process(boolean isHotReload) throws Exception {
         Map<String, Object> datas = new HashMap<>();
@@ -29,15 +23,14 @@ public class ConfigurationLoaderPath extends ConfigurationLoaderFile {
                 return ArrayUtils.contains(configResolver.getExtensions(), extension);
             }
         };
+        File file = (File) src;
         File[] files = file.listFiles(filter);
         for (File tmp : files) {
-            try (FileInputStream is = new FileInputStream(file)) {
-                Object object = processInputStream(is);
-                if (object != null) {
-                    String name = _getName(tmp);
-                    datas.put(name, object);
-                    LOGGER.debug("octopus configuration:{} loading to memcache", name);
-                }
+            Object object = processInputStream(tmp);
+            if (object != null) {
+                String name = _getName(tmp);
+                datas.put(name, object);
+                LOGGER.debug("octopus configuration:{} loading to memcache", name);
             }
         }
         for (Map.Entry<String, Object> entry : datas.entrySet()) {

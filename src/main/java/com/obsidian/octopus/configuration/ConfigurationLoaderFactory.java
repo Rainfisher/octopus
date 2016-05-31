@@ -2,9 +2,6 @@ package com.obsidian.octopus.configuration;
 
 import com.obsidian.octopus.resolver.ConfigResolver;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 /**
  *
@@ -13,39 +10,33 @@ import java.io.InputStream;
 public class ConfigurationLoaderFactory {
 
     public static ConfigurationLoader build(ConfigResolver configResolver) {
-        InputStream inputStream;
-        File file;
+        Object src = null;
         ConfigurationLoader loader = null;
 
         if (configResolver.isInner()) {
-            inputStream = Thread.class.getResourceAsStream(configResolver.getPath());
-            if (inputStream == null) {
+            src = Thread.class.getResourceAsStream(configResolver.getPath());
+            if (src == null) {
                 return null;
             }
-            loader = new ConfigurationLoaderFile(configResolver);
+            loader = new ConfigurationLoaderInnerFile();
         } else {
-            file = new File(configResolver.getPath());
+            File file = new File(configResolver.getPath());
             if (!file.exists()) {
                 return null;
             }
             if (file.isDirectory()) {
-                loader = new ConfigurationLoaderPath(configResolver);
+                loader = new ConfigurationLoaderPath();
             } else if (file.isFile()) {
-                loader = new ConfigurationLoaderFile(configResolver);
+                loader = new ConfigurationLoaderFile();
             }
-            try {
-                inputStream = new FileInputStream(file);
-            }
-            catch (FileNotFoundException e) {
-                return null;
-            }
+            src = file;
         }
 
         if (loader == null) {
             return null;
         }
 
-        loader.setInputStream(inputStream);
+        loader.setSrc(src);
         return loader;
     }
 

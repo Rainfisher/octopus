@@ -53,6 +53,10 @@ public class ConfigResolver {
 
     public void setInner(Boolean inner) {
         this.inner = inner;
+        if (inner) {
+            this.loadOnStart = true;
+            this.hotLoad = false;
+        }
     }
 
     public Boolean isLoadOnStart() {
@@ -60,7 +64,11 @@ public class ConfigResolver {
     }
 
     public void setLoadOnStart(Boolean loadOnStart) {
-        this.loadOnStart = loadOnStart;
+        if (!inner) {
+            this.loadOnStart = loadOnStart;
+        } else {
+            this.loadOnStart = true;
+        }
     }
 
     public Boolean isHotLoad() {
@@ -68,7 +76,11 @@ public class ConfigResolver {
     }
 
     public void setHotLoad(Boolean hotLoad) {
-        this.hotLoad = hotLoad;
+        if (!inner) {
+            this.hotLoad = hotLoad;
+        } else {
+            this.hotLoad = false;
+        }
     }
 
     public Class getCallback() {
@@ -78,5 +90,5 @@ public class ConfigResolver {
     public void setCallback(Class callback) {
         this.callback = callback;
     }
-    
+
 }

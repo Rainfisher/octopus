@@ -2,7 +2,8 @@ package com.obsidian.octopus.configuration;
 
 import com.obsidian.octopus.configuration.type.ConfigurationTypeInterface;
 import com.obsidian.octopus.configuration.type.ConfigurationTypeManager;
-import com.obsidian.octopus.resolver.ConfigResolver;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,40 +17,42 @@ public class ConfigurationLoaderFile extends ConfigurationLoader {
 
     protected final Map<String, Long> loadingTimestamp;
 
-    public ConfigurationLoaderFile(ConfigResolver configResolver) {
-        super(configResolver);
+    public ConfigurationLoaderFile() {
         this.loadingTimestamp = new HashMap<>();
     }
 
     @Override
     public void process(boolean isHotReload) throws Exception {
-        if (isHotReload && !configResolver.isInner()) {
+        File file = (File) src;
+        if (isHotReload) {
             String fileName = file.getName();
             long lastModified = file.lastModified();
             if (!this.checkTime(fileName, lastModified)) {
                 return;
             }
         }
-        Object object = processInputStream(inputStream);
+        Object object = processInputStream(file);
         if (object != null) {
             save(_getName(), object, true);
         }
-
     }
 
     private String _getName() {
         String name = configResolver.getName();
         if (name == null) {
+            File file = (File) src;
             name = FilenameUtils.getBaseName(file.getName());
         }
         return name;
     }
 
-    protected Object processInputStream(InputStream inputStream)
+    protected Object processInputStream(File file)
             throws Exception {
         String fileType = configResolver.getFileType();
-        ConfigurationTypeInterface instance = ConfigurationTypeManager.getInstance(fileType);
-        return instance.parse(inputStream);
+        try (InputStream inputStream = new FileInputStream(file)) {
+            ConfigurationTypeInterface instance = ConfigurationTypeManager.getInstance(fileType);
+            return instance.parse(inputStream);
+        }
     }
 
     protected boolean checkTime(String fileName, long lastModified) {
