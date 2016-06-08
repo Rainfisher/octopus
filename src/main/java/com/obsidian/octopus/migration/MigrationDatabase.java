@@ -17,14 +17,17 @@ public abstract class MigrationDatabase {
     @Inject
     private Injector injector;
 
+    public abstract List<Class<? extends Migration>> getMigrations();
+
+    public abstract boolean save(String name);
+
     public void onStart() {
         for (Class<? extends Migration> clazz : this.getMigrations()) {
             String name = clazz.getSimpleName();
             try {
-                if (!contains(name)) {
+                if (save(name)) {
                     Migration migration = (Migration) injector.getInstance(clazz);
-                    migration.up();
-                    this.save(name);
+                    migration.execute();
                 }
             }
             catch (Exception e) {
@@ -32,26 +35,5 @@ public abstract class MigrationDatabase {
             }
         }
     }
-
-    public void onCombine() {
-        for (Class<? extends Migration> clazz : this.getMigrations()) {
-            String name = clazz.getSimpleName();
-            try {
-                if (!contains(name)) {
-                    Migration migration = (Migration) injector.getInstance(clazz);
-                    migration.combine();
-                }
-            }
-            catch (Exception e) {
-                LOGGER.warn("onCombine: " + name, e);
-            }
-        }
-    }
-
-    public abstract List<Class<? extends Migration>> getMigrations();
-
-    public abstract boolean contains(String name);
-
-    public abstract void save(String name);
 
 }

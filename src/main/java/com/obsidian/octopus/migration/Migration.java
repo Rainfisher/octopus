@@ -6,8 +6,6 @@ package com.obsidian.octopus.migration;
  */
 public interface Migration {
 
-    void up();
-
-    void combine();
+    void execute();
 
 }
