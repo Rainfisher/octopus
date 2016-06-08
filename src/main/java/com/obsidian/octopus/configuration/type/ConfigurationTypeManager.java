@@ -12,6 +12,7 @@ public class ConfigurationTypeManager {
     private static final Map<String, ConfigurationTypeInterface> mapping = new HashMap<>();
 
     static {
+        register("string", new ConfigurationTypeString());
         register("properties", new ConfigurationTypeProperties());
         register("json", new ConfigurationTypeJson());
         register("json-array", new ConfigurationTypeJsonArray());
