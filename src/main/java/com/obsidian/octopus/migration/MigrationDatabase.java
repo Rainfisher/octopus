@@ -31,9 +31,13 @@ public abstract class MigrationDatabase {
                 }
             }
             catch (Exception e) {
-                LOGGER.warn("onStart: " + name, e);
+                this.onException(name, e);
             }
         }
+    }
+
+    public void onException(String name, Exception e) {
+        LOGGER.warn("onStart: " + name, e);
     }
 
 }
