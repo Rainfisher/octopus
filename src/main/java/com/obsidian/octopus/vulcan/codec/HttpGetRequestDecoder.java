@@ -38,14 +38,13 @@ public class HttpGetRequestDecoder extends MessageDecoderAdapter {
     @Override
     public MessageDecoderResult decode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception {
         HttpRequestMessage request = new HttpRequestMessage();
-        request.setHeaders(parseRequest(new StringReader(in.getString(decoder))));
+        this.parseRequest(request, new StringReader(in.getString(decoder)));
         request.setReceivedAt(System.currentTimeMillis());
         out.write(request);
         return OK;
     }
 
-    private Map<String, String[]> parseRequest(Reader is) {
-        Map<String, String[]> map = new HashMap<>();
+    private void parseRequest(HttpRequestMessage requestMessage, Reader is) {
         BufferedReader rdr = new BufferedReader(is);
 
         try {
@@ -53,25 +52,26 @@ public class HttpGetRequestDecoder extends MessageDecoderAdapter {
             String line = rdr.readLine();
             String[] url = line.split(" ");
             if (url.length < 3) {
-                return map;
+                return;
             }
+            Map<String, String> headers = new HashMap<>();
+            Map<String, String[]> parameters = new HashMap<>();
 
-            map.put("URI", new String[]{line});
-            map.put("Method", new String[]{url[0].toUpperCase()});
-            map.put("Context", new String[]{url[1].substring(1)});
-            map.put("Protocol", new String[]{url[2]});
+            requestMessage.setUri(line);
+            requestMessage.setMethod(url[0].toUpperCase());
+            requestMessage.setContext(url[1].substring(1));
+            requestMessage.setProtocol(url[2]);
             // Read header
             while ((line = rdr.readLine()) != null && line.length() > 0) {
                 String[] tokens = line.split(": ");
-                map.put(tokens[0].toLowerCase(), new String[]{tokens[1]});
+                headers.put(tokens[0].toLowerCase(), tokens[1]);
             }
 
             // If method 'POST' then read Content-Length worth of data
             if (url[0].equalsIgnoreCase("GET")) {
                 int idx = url[1].indexOf('?');
                 if (idx != -1) {
-                    map.put("Context",
-                            new String[]{url[1].substring(1, idx)});
+                    requestMessage.setContext(url[1].substring(1, idx));
                     line = url[1].substring(idx + 1);
                 } else {
                     line = null;
@@ -84,29 +84,28 @@ public class HttpGetRequestDecoder extends MessageDecoderAdapter {
                     String[] tokens = element.split("=");
                     switch (tokens.length) {
                         case 0:
-                            map.put("@".concat(element).toLowerCase(), new String[]{});
+                            parameters.put(element.toLowerCase(), new String[]{});
                             break;
                         case 1:
-                            map.put("@".concat(tokens[0]).toLowerCase(), new String[]{""});
+                            parameters.put(tokens[0].toLowerCase(), new String[]{""});
                             break;
                         default:
-                            String name = "@".concat(tokens[0]).toLowerCase();
-                            if (map.containsKey(name)) {
-                                params = map.get(name);
+                            String name = tokens[0].toLowerCase();
+                            if (parameters.containsKey(name)) {
+                                params = parameters.get(name);
                                 String[] tmp = new String[params.length + 1];
                                 System.arraycopy(params, 0, tmp, 0, params.length);
                                 params = tmp;
                             }
                             params[params.length - 1] = tokens[1].trim();
-                            map.put(name, params);
+                            parameters.put(name, params);
                     }
                 }
             }
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             LOGGER.debug("parseRequest", ex);
         }
-
-        return map;
     }
 
 }

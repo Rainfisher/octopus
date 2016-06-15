@@ -6,6 +6,7 @@ import com.obsidian.octopus.vulcan.codec.IoSessionType;
 import com.obsidian.octopus.vulcan.codec.RequestMessage;
 import com.obsidian.octopus.vulcan.object.ActionContext;
 import com.obsidian.octopus.vulcan.object.ActionRequest;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.mina.core.session.IoSession;
@@ -23,14 +24,17 @@ public abstract class ProcessorHttpAbstract implements Processor {
 
         JSONObject json = new JSONObject();
         Map<String, String> headers = new HashMap<>();
-        
-        for (Map.Entry<String, String[]> entry : message.getHeaders().entrySet()) {
+
+        for (Map.Entry<String, String> entry : message.getHeaders().entrySet()) {
+            headers.put(entry.getKey(), entry.getValue());
+        }
+        for (Map.Entry<String, String[]> entry : message.getParameters().entrySet()) {
             String key = entry.getKey();
             String[] value = entry.getValue();
-            if (key.startsWith(HttpRequestMessage.PARAMETER_KEY)) {
+            if (value.length == 1) {
                 json.put(key.substring(1), value[0]);
             } else {
-                headers.put(key, value[0]);
+                json.put(key.substring(1), Arrays.asList(value));
             }
         }
         ActionContext.set(ActionContext.REQUEST_HEADERS, headers);

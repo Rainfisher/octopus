@@ -19,6 +19,7 @@
  */
 package com.obsidian.octopus.vulcan.codec;
 
+import com.alibaba.fastjson.JSONObject;
 import java.util.Map;
 
 /**
@@ -29,58 +30,85 @@ import java.util.Map;
  */
 public class HttpRequestMessage extends RequestMessage {
 
-    public static String PARAMETER_KEY = "@";
-    private Map<String, String[]> headers = null;
+    private String uri;
+    private String method;
+    private String context;
+    private String protocol;
 
-    public void setHeaders(Map<String, String[]> headers) {
-        this.headers = headers;
+    private Map<String, String> headers = null;
+    private Map<String, String[]> parameters = null;
+
+    public String getUri() {
+        return uri;
     }
 
-    public Map<String, String[]> getHeaders() {
-        return headers;
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
     }
 
     public String getContext() {
-        String[] context = headers.get("Context");
-        return context == null ? "" : context[0];
+        return context;
     }
 
-    public String getParameter(String name) {
-        String[] param = headers.get(PARAMETER_KEY.concat(name));
-        return param == null || param.length == 0 ? null : param[0];
+    public void setContext(String context) {
+        this.context = context;
     }
 
-    public String[] getParameters(String name) {
-        String[] param = headers.get(PARAMETER_KEY.concat(name));
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
+    }
+
+    public String getHeader(String name) {
+        return headers.get(name);
+    }
+
+    public Map<String, String> getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(Map<String, String> headers) {
+        this.headers = headers;
+    }
+
+    public String[] getParameter(String name) {
+        String[] param = parameters.get(name);
         return param == null ? new String[]{} : param;
     }
 
-    public String[] getHeader(String name) {
-        return headers.get(name);
+    public Map<String, String[]> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(Map<String, String[]> parameters) {
+        this.parameters = parameters;
     }
 
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder("{");
-
-        for (Map.Entry<String, String[]> e : headers.entrySet()) {
-            str.append(e.getKey()).append(": ").append(arrayToString(e.getValue(), ',')).append(", ");
+        JSONObject json = new JSONObject();
+        json.put("uri", uri);
+        json.put("method", method);
+        json.put("context", context);
+        json.put("protocol", protocol);
+        if (headers != null) {
+            json.put("headers", headers);
         }
-        str.append("}");
-        return str.toString();
+        if (parameters != null) {
+            json.put("parameters", parameters);
+        }
+        return json.toString();
     }
 
-    public static String arrayToString(String[] s, char sep) {
-        if (s == null || s.length == 0) {
-            return "";
-        }
-        StringBuilder buf = new StringBuilder();
-        for (int i = 0; i < s.length; i++) {
-            if (i > 0) {
-                buf.append(sep);
-            }
-            buf.append(s[i]);
-        }
-        return buf.toString();
-    }
 }
