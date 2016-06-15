@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

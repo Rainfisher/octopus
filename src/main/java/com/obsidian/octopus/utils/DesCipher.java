@@ -22,7 +22,7 @@ import org.apache.commons.codec.binary.Base64;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public class DesCipher {
 

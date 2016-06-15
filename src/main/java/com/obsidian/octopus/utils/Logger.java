@@ -11,7 +11,7 @@ import org.slf4j.Marker;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public class Logger implements org.slf4j.Logger {
 

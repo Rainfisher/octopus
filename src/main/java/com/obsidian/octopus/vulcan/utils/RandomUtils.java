@@ -6,7 +6,7 @@ import org.apache.commons.lang.math.JVMRandom;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public class RandomUtils {
 

@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public interface CacheOperater {
 

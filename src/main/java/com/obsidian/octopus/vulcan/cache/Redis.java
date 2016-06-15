@@ -18,7 +18,7 @@ import redis.clients.jedis.Protocol;
 
 /**
  *
- * @author Alex Chou <xi.zhou at obsidian>
+ * @author Alex Chou
  */
 public class Redis implements CacheOperater {
 
