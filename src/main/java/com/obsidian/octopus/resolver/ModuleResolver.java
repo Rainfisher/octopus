@@ -16,12 +16,15 @@ public class ModuleResolver {
     private final List<FilterResolver> filterResolvers;
     private String quartzConfig;
     private final List<QuartzResolver> quartzResolvers;
+    private Class responseFilter;
+    private final List<ProcessorResolver> processorResolvers;
 
     public ModuleResolver() {
         this.configResolvers = new ArrayList<>();
         this.listenerResolvers = new ArrayList<>();
         this.filterResolvers = new ArrayList<>();
         this.quartzResolvers = new ArrayList<>();
+        this.processorResolvers = new ArrayList<>();
     }
 
     public String getLog4j() {
@@ -78,6 +81,22 @@ public class ModuleResolver {
 
     public void addQuartzResolver(QuartzResolver quartzResolver) {
         this.quartzResolvers.add(quartzResolver);
+    }
+
+    public Class getResponseFilter() {
+        return responseFilter;
+    }
+
+    public void setResponseFilter(Class responseFilter) {
+        this.responseFilter = responseFilter;
+    }
+
+    public List<ProcessorResolver> getProcessorResolvers() {
+        return processorResolvers;
+    }
+
+    public void addProcessorResolver(ProcessorResolver processorResolver) {
+        this.processorResolvers.add(processorResolver);
     }
 
 }

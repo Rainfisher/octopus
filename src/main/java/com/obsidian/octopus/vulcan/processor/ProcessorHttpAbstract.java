@@ -32,9 +32,9 @@ public abstract class ProcessorHttpAbstract implements Processor {
             String key = entry.getKey();
             String[] value = entry.getValue();
             if (value.length == 1) {
-                json.put(key.substring(1), value[0]);
+                json.put(key, value[0]);
             } else {
-                json.put(key.substring(1), Arrays.asList(value));
+                json.put(key, Arrays.asList(value));
             }
         }
         ActionContext.set(ActionContext.REQUEST_HEADERS, headers);

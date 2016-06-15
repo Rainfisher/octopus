@@ -26,7 +26,7 @@ public class ResponseFilterManager {
     private ResponseFilter _getInstance(Class<? extends ResponseFilter> filterClass) {
         ResponseFilter filter = null;
         try {
-            filterClass.newInstance();
+            filter = filterClass.newInstance();
         }
         catch (Exception e) {
             e.printStackTrace();

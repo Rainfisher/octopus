@@ -14,10 +14,13 @@ import com.obsidian.octopus.resolver.FilterResolver;
 import com.obsidian.octopus.resolver.IocResolver;
 import com.obsidian.octopus.resolver.ListenerResolver;
 import com.obsidian.octopus.resolver.ModuleResolver;
+import com.obsidian.octopus.resolver.ProcessorResolver;
 import com.obsidian.octopus.resolver.QuartzResolver;
 import com.obsidian.octopus.resolver.Resolver;
 import com.obsidian.octopus.utils.FileUtils;
 import com.obsidian.octopus.utils.QuartzUtils;
+import com.obsidian.octopus.vulcan.filter.ResponseFilterManager;
+import com.obsidian.octopus.vulcan.processor.ProcessorFilter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,6 +67,7 @@ public abstract class Dispatcher {
             _processIoc();
             _processListener();
             _processFilter();
+            _processVulcan();
             _processQuartz();
 
             _contextStart();
@@ -128,6 +132,22 @@ public abstract class Dispatcher {
                 OctopusMinaFilter minaFilter = (OctopusMinaFilter) iocProvide.getInstance(clazz);
                 minaFilter.setName(filterResolver.getGroup());
                 context.addFilter(minaFilter);
+            }
+        }
+
+        private void _processVulcan() throws Exception {
+            LOGGER.debug("octopus: process vulcan........");
+            IocInstanceProvider iocProvide = context.getIocProvide();
+            Class responseFilter = moduleResolver.getResponseFilter();
+            if (responseFilter != null) {
+                ResponseFilterManager responseFilterManager = iocProvide.getInstance(ResponseFilterManager.class);
+                responseFilterManager.setDefaultFilter(responseFilter);
+            }
+            ProcessorFilter processorFilter = iocProvide.getInstance(ProcessorFilter.class);
+            for (ProcessorResolver processorResolver : moduleResolver.getProcessorResolvers()) {
+                for (Class stack : processorResolver.getStacks()) {
+                    processorFilter.register(processorResolver.getKey(), stack);
+                }
             }
         }
 

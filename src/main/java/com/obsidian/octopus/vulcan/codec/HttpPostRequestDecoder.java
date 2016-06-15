@@ -136,6 +136,8 @@ public class HttpPostRequestDecoder extends MessageDecoderAdapter {
                     }
                 }
             }
+            requestMessage.setHeaders(headers);
+            requestMessage.setParameters(parameters);
         }
         catch (IOException ex) {
             LOGGER.debug("parseRequest", ex);

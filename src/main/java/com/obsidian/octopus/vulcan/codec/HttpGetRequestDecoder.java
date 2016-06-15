@@ -102,6 +102,8 @@ public class HttpGetRequestDecoder extends MessageDecoderAdapter {
                     }
                 }
             }
+            requestMessage.setHeaders(headers);
+            requestMessage.setParameters(parameters);
         }
         catch (IOException ex) {
             LOGGER.debug("parseRequest", ex);
