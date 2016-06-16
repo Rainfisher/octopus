@@ -26,7 +26,7 @@ public class ResponseUtils {
     }
 
     public static ResponseMessage encodeHttp() {
-        Integer responseCode = (Integer) ActionContext.get(ActionContext.RESPONSE_CODE);
+        Integer responseCode = (Integer) ActionContext.get(ActionContext.HTTP_RESPONSE_CODE);
         Object body = ActionContext.get(ActionContext.BODY);
 
         ResponseMessage responseMessage = new ResponseMessage();

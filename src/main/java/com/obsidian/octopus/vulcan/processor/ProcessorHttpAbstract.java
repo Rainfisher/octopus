@@ -2,6 +2,7 @@ package com.obsidian.octopus.vulcan.processor;
 
 import com.alibaba.fastjson.JSONObject;
 import com.obsidian.octopus.vulcan.codec.HttpRequestMessage;
+import com.obsidian.octopus.vulcan.codec.HttpResponseMessage;
 import com.obsidian.octopus.vulcan.codec.IoSessionType;
 import com.obsidian.octopus.vulcan.codec.RequestMessage;
 import com.obsidian.octopus.vulcan.object.ActionContext;
@@ -43,6 +44,7 @@ public abstract class ProcessorHttpAbstract implements Processor {
         actionRequest.setContext(message.getContext());
         actionRequest.setParameters(json);
         ActionContext.set(ActionContext.ACTION_REQUEST, actionRequest);
+        ActionContext.set(ActionContext.HTTP_RESPONSE_CODE, HttpResponseMessage.HTTP_STATUS_SUCCESS);
 
         this.execute();
     }

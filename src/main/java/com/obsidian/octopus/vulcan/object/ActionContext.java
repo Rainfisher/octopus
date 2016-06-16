@@ -20,6 +20,7 @@ public class ActionContext {
     public static final String ACTION = "ACTION";
     public static final String RESPONSE_CONTEXT = "RESPONSE_CONTEXT";
     public static final String RESPONSE_CODE = "RESPONSE_CODE";
+    public static final String HTTP_RESPONSE_CODE = "HTTP_RESPONSE_CODE";
     public static final String BODY = "BODY";
     public static final String RESPONSE = "RESPONSE";
 
@@ -83,7 +84,7 @@ public class ActionContext {
         return (Action) get(ACTION);
     }
 
-    public static void setResponseCode(Object responseCode) {
+    public static void setResponseCode(ResponseCode responseCode) {
         set(RESPONSE_CODE, responseCode);
     }
 
