@@ -12,6 +12,6 @@ public interface ActionInvoker {
 
     boolean prepare(Router router);
 
-    void action() throws Exception;
+    void action();
 
 }

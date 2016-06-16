@@ -2,6 +2,7 @@ package com.obsidian.octopus.vulcan.object;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.inject.Injector;
+import com.obsidian.octopus.utils.Logger;
 import com.obsidian.octopus.vulcan.utils.ActionUtils;
 import com.obsidian.octopus.vulcan.annotation.InterceptorBy;
 import com.obsidian.octopus.vulcan.core.Action;
@@ -21,6 +22,7 @@ import javax.inject.Singleton;
 @Singleton
 public class ActionInvokerImpl implements ActionInvoker {
 
+    private static final Logger LOGGER = Logger.getInstance(ActionInvoker.class);
     @Inject
     private Injector injector;
     @Inject
@@ -40,7 +42,7 @@ public class ActionInvokerImpl implements ActionInvoker {
     }
 
     @Override
-    public void action() throws Exception {
+    public void action() {
         ActionRequest actionRequest = ActionContext.getActionRequest();
         JSONObject json = actionRequest.getParameters();
 
@@ -62,8 +64,8 @@ public class ActionInvokerImpl implements ActionInvoker {
             }
         }
         catch (Exception e) {
+            LOGGER.error("ActionInvoke error:", e);
             ActionContext.setResponseCode(SystemResponseCode.UNKNOWN_ERROR);
-            throw e;
         }
     }
 
