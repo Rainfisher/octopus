@@ -43,7 +43,7 @@ public class HttpResponseEncoder implements MessageEncoder<HttpResponseMessage> 
 
     public HttpResponseEncoder() {
     }
-
+    
     @Override
     public void encode(IoSession session, HttpResponseMessage message,
             ProtocolEncoderOutput out) throws Exception {
@@ -78,9 +78,6 @@ public class HttpResponseEncoder implements MessageEncoder<HttpResponseMessage> 
             buf.put(CRLF);
             // add body
             buf.put(message.getBody());
-            //System.out.println("\n+++++++");
-            //for (int i=0; i<buf.position();i++)System.out.print(new String(new byte[]{buf.get(i)}));
-            //System.out.println("\n+++++++");
         } catch (CharacterCodingException ex) {
             LOGGER.warn("response encoder", ex);
         }

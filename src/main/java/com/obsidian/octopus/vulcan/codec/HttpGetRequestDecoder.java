@@ -7,6 +7,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.mina.core.buffer.IoBuffer;
@@ -109,5 +110,5 @@ public class HttpGetRequestDecoder extends MessageDecoderAdapter {
             LOGGER.debug("parseRequest", ex);
         }
     }
-
+    
 }

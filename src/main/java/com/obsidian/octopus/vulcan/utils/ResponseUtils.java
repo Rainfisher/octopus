@@ -73,7 +73,6 @@ public class ResponseUtils {
         Object body = response.getBody();
 
         HttpResponseMessage httpResponse = new HttpResponseMessage();
-        httpResponse.setContentType("application/json; charset=utf-8");
         if (headers != null) {
             for (Map.Entry<String, String> entry : headers.entrySet()) {
                 httpResponse.setHeader(entry.getKey(), entry.getValue());
@@ -83,7 +82,11 @@ public class ResponseUtils {
             httpResponse.setResponseCode(responseCode);
         }
         if (body != null) {
-            httpResponse.appendBody(body.toString());
+            if (body instanceof byte[]) {
+                httpResponse.appendBody((byte[]) body);
+            } else {
+                httpResponse.appendBody(body.toString());
+            }
         }
         return httpResponse;
     }

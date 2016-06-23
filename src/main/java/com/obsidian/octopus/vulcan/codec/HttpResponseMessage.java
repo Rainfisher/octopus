@@ -58,11 +58,9 @@ public class HttpResponseMessage {
     private int responseCode = HTTP_STATUS_SUCCESS;
 
     public HttpResponseMessage() {
-//          headers.put("Server", "HttpServer (" + Server.VERSION_STRING + ')');
-        headers.put("Cache-Control", "private");
+          headers.put("Server", "Java Server 1.8");
+        headers.put("Cache-Control", "no-cache");
         headers.put("Content-Type", "text/html; charset=iso-8859-1");
-        headers.put("Connection", "keep-alive");
-        headers.put("Keep-Alive", "200");
         headers.put("Date", new SimpleDateFormat(
             "EEE, dd MMM yyyy HH:mm:ss zzz").format(new Date()));
         headers.put("Last-Modified", new SimpleDateFormat(
