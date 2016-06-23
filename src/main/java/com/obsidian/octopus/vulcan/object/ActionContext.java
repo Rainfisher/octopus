@@ -43,6 +43,10 @@ public class ActionContext {
 
     private final Map<String, Object> context = new HashMap<>();
 
+    public final static void init() {
+        getActionContext().context.clear();
+    }
+
     public final static Object get(String key) {
         return getActionContext().context.get(key);
     }

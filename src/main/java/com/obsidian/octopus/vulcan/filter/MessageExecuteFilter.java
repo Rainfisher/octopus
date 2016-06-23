@@ -21,22 +21,20 @@ public class MessageExecuteFilter {
     public void execute(IoSession ioSession, RequestMessage requestMessage)
             throws Exception {
         requestMessage.setExecuteAt(System.currentTimeMillis());
+        ActionContext.init();
         ActionContext.set(ActionContext.IO_SESSION, ioSession);
         ActionContext.set(ActionContext.REQUEST_MESSAGE, requestMessage);
-        ActionContext.set(ActionContext.REQUEST_HEADERS, null);
-        ActionContext.set(ActionContext.RESPONSE_HEADERS, null);
 
-        try {
-            processorFilter.execute(ioSession, requestMessage);
-            ActionRequest actionRequest = ActionContext.getActionRequest();
-            Object response = ActionContext.get(ActionContext.RESPONSE);
-            if (response != null && response instanceof ResponseMessage) {
-                IoSessionUtils.write(ioSession, actionRequest, (ResponseMessage) response);
-            }
+        processorFilter.execute(ioSession, requestMessage);
+        ActionRequest actionRequest = ActionContext.getActionRequest();
+        Object response = ActionContext.get(ActionContext.RESPONSE);
+        if (response != null && response instanceof ResponseMessage) {
+            IoSessionUtils.write(ioSession, actionRequest, (ResponseMessage) response);
         }
-        finally {
-            ActionContext.removeActionContext();
-        }
+    }
+
+    public void clearActionContext() {
+        ActionContext.removeActionContext();
     }
 
 }
