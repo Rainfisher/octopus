@@ -1,5 +1,6 @@
 package com.obsidian.octopus.ioc;
 
+import com.google.inject.ConfigurationException;
 import com.google.inject.Injector;
 
 /**
@@ -26,6 +27,17 @@ public abstract class IocGuiceProvider implements IocInstanceProvider {
             injector = getInjector();
         }
         injector.injectMembers(instance);
+    }
+
+    @Override
+    public boolean canInject(Class clazz) {
+        Object instance = null;
+        try {
+            instance = getInstance(clazz);
+        }
+        catch (ConfigurationException e) {
+        }
+        return instance != null;
     }
 
 }

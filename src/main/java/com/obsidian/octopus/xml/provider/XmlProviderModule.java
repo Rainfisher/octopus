@@ -34,8 +34,6 @@ public class XmlProviderModule implements XmlProviderInterface<Resolver> {
         manager.register("filter", new XmlProviderModuleFilter());
         manager.register("quartz-config", new XmlProviderModuleQuartzConfig());
         manager.register("quartz-group", new XmlProviderModuleQuartz());
-        manager.register("response-filter", new XmlProviderModuleResponseFilter());
-        manager.register("processor", new XmlProviderModuleProcessor());
         return manager;
     }
 

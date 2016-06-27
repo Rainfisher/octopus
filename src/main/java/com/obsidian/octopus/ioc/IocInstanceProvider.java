@@ -9,5 +9,7 @@ public interface IocInstanceProvider {
     <T> T getInstance(Class<? extends T> clazz);
 
     void injectMembers(Object instance);
-
+    
+    boolean canInject(Class clazz);
+    
 }

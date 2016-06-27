@@ -1,7 +1,6 @@
 package com.obsidian.octopus.vulcan.object;
 
 import com.google.inject.ImplementedBy;
-import com.obsidian.octopus.vulcan.core.Router;
 
 /**
  *
@@ -10,8 +9,6 @@ import com.obsidian.octopus.vulcan.core.Router;
 @ImplementedBy(ActionInvokerImpl.class)
 public interface ActionInvoker {
 
-    boolean prepare(Router router);
-
-    void action();
+    boolean execute() throws Exception;
 
 }

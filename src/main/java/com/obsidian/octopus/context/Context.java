@@ -16,7 +16,7 @@ import org.quartz.SchedulerException;
  * @author Alex Chou
  */
 public interface Context extends Runnable {
-
+    
     ConfigurationHotLoader getConfigurationHotLoader();
 
     Map<ConfigResolver, ConfigurationLoader> getConfigurationLoaderMap();

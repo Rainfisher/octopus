@@ -2,7 +2,6 @@ package com.obsidian.octopus.ioc;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.obsidian.octopus.ioc.IocGuiceProvider;
 
 /**
  *
