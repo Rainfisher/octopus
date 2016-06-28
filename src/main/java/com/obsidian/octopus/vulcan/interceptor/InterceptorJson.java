@@ -27,7 +27,7 @@ public class InterceptorJson implements Interceptor {
 
             JSONObject json = new JSONObject();
             Class<? extends Action> actionClass = action.getClass();
-            Method[] methods = actionClass.getMethods();
+            Method[] methods = actionClass.getDeclaredMethods();
             for (Method method : methods) {
                 Response response = method.getAnnotation(Response.class);
                 if (response == null) {
