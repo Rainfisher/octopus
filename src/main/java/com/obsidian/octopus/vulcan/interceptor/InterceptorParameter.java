@@ -14,6 +14,8 @@ import javax.inject.Singleton;
 @Singleton
 public class InterceptorParameter implements Interceptor {
 
+    public static final String GROUP_NAME = "@group";
+
     @Override
     public boolean intercept(ActionInvocation invocation) throws Exception {
         Action action = invocation.getAction();
@@ -22,7 +24,7 @@ public class InterceptorParameter implements Interceptor {
         String[] group = (String[]) ActionContext.get(ActionContext.CONTEXT_MATCHER);
         for (int i = 0; i < group.length; i++) {
             String string = group[i];
-            json.put("@group" + i, string);
+            json.put(GROUP_NAME + i, string);
         }
         ActionUtils.inject(action, json);
         return invocation.invoke();

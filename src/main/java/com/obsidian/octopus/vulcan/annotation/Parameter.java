@@ -14,6 +14,9 @@ import java.lang.annotation.Target;
 public @interface Parameter {
 
     String name() default "";
-    
+
     boolean optional() default false;
+
+    int groupIndex() default -1;
+
 }

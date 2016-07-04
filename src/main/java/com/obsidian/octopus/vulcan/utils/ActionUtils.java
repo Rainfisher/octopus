@@ -5,6 +5,7 @@ import com.obsidian.octopus.utils.Logger;
 import com.obsidian.octopus.vulcan.annotation.Parameter;
 import com.obsidian.octopus.vulcan.core.Action;
 import com.obsidian.octopus.vulcan.exception.ActionInjectException;
+import com.obsidian.octopus.vulcan.interceptor.InterceptorParameter;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import org.apache.commons.beanutils.BeanUtils;
@@ -29,6 +30,9 @@ public class ActionUtils {
             if (name.isEmpty()) {
                 name = field.getName();
             }
+            if (parameter.groupIndex() >= 0) {
+                name = InterceptorParameter.GROUP_NAME + parameter.groupIndex();
+            }
             String value = param.getString(name);
             if (value == null) {
                 if (!parameter.optional()) {
@@ -37,7 +41,8 @@ public class ActionUtils {
             } else {
                 try {
                     BeanUtils.setProperty(action, field.getName(), param.getString(name));
-                } catch (IllegalAccessException | InvocationTargetException e) {
+                }
+                catch (IllegalAccessException | InvocationTargetException e) {
                     LOGGER.debug("inject", e);
                     throw new ActionInjectException();
                 }
