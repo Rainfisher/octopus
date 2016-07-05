@@ -1,6 +1,5 @@
 package com.obsidian.octopus.vulcan.codec;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -9,7 +8,7 @@ import java.util.Map;
  */
 public class ResponseMessage {
 
-    private Map<String, String> headers = new HashMap<>();
+    private Map<String, String> headers;
     private Integer responseCode;
     private Object body;
     private boolean push;
