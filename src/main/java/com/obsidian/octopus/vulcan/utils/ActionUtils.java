@@ -33,14 +33,14 @@ public class ActionUtils {
             if (parameter.groupIndex() >= 0) {
                 name = InterceptorParameter.GROUP_NAME + parameter.groupIndex();
             }
-            String value = param.getString(name);
+            Object value = param.get(name);
             if (value == null) {
                 if (!parameter.optional()) {
                     throw new ActionInjectException();
                 }
             } else {
                 try {
-                    BeanUtils.setProperty(action, field.getName(), param.getString(name));
+                    BeanUtils.setProperty(action, field.getName(), value);
                 }
                 catch (IllegalAccessException | InvocationTargetException e) {
                     LOGGER.debug("inject", e);
