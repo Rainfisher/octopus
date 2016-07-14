@@ -2,11 +2,15 @@ package com.obsidian.octopus.utils;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
 
 /**
  *
@@ -27,6 +31,10 @@ public class PackageUtils {
                 if ("file".equals(protocol)) {
                     String filePath = URLDecoder.decode(url.getFile(), "UTF-8");
                     findClassInPackageByFile(packageName, filePath, recursive, clazzs);
+                } else if ("jar".equals(protocol)) {
+                    String jarFile = System.getProperty("java.class.path");
+                    String filePath = URLDecoder.decode(jarFile, "UTF-8");
+                    findClassInJar(packageDirName, filePath, clazzs);
                 }
             }
         }
@@ -61,6 +69,26 @@ public class PackageUtils {
                 catch (Exception e) {
                 }
             }
+        }
+    }
+
+    public static void findClassInJar(String packageDirName, String filePath, List<Class> clazzs)
+            throws Exception {
+        List<String> list = new ArrayList<>();
+        try (JarInputStream jarInputStream = new JarInputStream(new FileInputStream(filePath))) {
+            JarEntry jarEntry;
+            while ((jarEntry = jarInputStream.getNextJarEntry()) != null) {
+                String name = jarEntry.getName();
+                if (name.startsWith(packageDirName) && name.endsWith("class")) {
+                    list.add(name);
+                }
+            }
+        }
+        Collections.sort(list);
+        for (String name : list) {
+            name = name.replace("/", ".");
+            name = name.replace(".class", "");
+            clazzs.add(Thread.currentThread().getContextClassLoader().loadClass(name));
         }
     }
 
