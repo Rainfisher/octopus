@@ -5,9 +5,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.mina.core.buffer.IoBuffer;
@@ -79,6 +79,7 @@ public class HttpGetRequestDecoder extends MessageDecoderAdapter {
                 }
             }
             if (line != null) {
+                line = URLDecoder.decode(line, Charset.defaultCharset().name());
                 String[] match = line.split("\\&");
                 for (String element : match) {
                     String[] params = new String[1];
