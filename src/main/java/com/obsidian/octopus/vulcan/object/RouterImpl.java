@@ -6,8 +6,10 @@ import com.obsidian.octopus.utils.Logger;
 import com.obsidian.octopus.vulcan.core.Action;
 import com.obsidian.octopus.vulcan.core.Router;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -23,8 +25,8 @@ public class RouterImpl implements Router {
 
     private static final Logger LOGGER = Logger.getInstance(RouterImpl.class);
 
+    private final Set<String> routers = new HashSet<>();
     private final Map<Pattern, Class<? extends Action>> mapping = new HashMap<>();
-
     private final Map<String, Class<? extends Action>> caches = new HashMap<>();
 
     @Override
@@ -65,14 +67,17 @@ public class RouterImpl implements Router {
     }
 
     @Inject
-    public void init() {
-        mapping.clear();
+    public void inject() {
+        this.initialize();
+    }
+
+    public void initialize() {
         Properties properties = (Properties) ConfigurationManager.getInstance().getConfiguration("router");
         for (String stringPropertyName : properties.stringPropertyNames()) {
             String className = properties.getProperty(stringPropertyName);
             try {
                 Class<? extends Action> clazz = (Class<? extends Action>) ClassUtils.getClass(className);
-                mapping.put(Pattern.compile(stringPropertyName), clazz);
+                registerRouter(stringPropertyName, clazz);
             }
             catch (ClassNotFoundException e) {
                 LOGGER.warn("router action not find: {}", className);
@@ -80,6 +85,15 @@ public class RouterImpl implements Router {
             catch (Exception e) {
                 LOGGER.warn("router exception", e);
             }
+        }
+    }
+
+    public void registerRouter(String router, Class<? extends Action> clazz) {
+        Pattern pattern = Pattern.compile(router);
+        if (routers.add(router)) {
+            mapping.put(pattern, clazz);
+        } else {
+            LOGGER.error("router is duplicate: {}", router);
         }
     }
 
