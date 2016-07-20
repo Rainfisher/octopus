@@ -24,16 +24,11 @@ public class ConfigurationLoaderFile extends ConfigurationLoader {
     @Override
     public void process(boolean isHotReload) throws Exception {
         File file = (File) src;
-        if (isHotReload) {
-            String fileName = file.getName();
-            long lastModified = file.lastModified();
-            if (!this.checkTime(fileName, lastModified)) {
-                return;
+        if (this.checkTime(isHotReload, file)) {
+            Object object = processInputStream(file);
+            if (object != null) {
+                save(_getName(), object, true);
             }
-        }
-        Object object = processInputStream(file);
-        if (object != null) {
-            save(_getName(), object, true);
         }
     }
 
@@ -53,6 +48,10 @@ public class ConfigurationLoaderFile extends ConfigurationLoader {
             ConfigurationTypeInterface instance = ConfigurationTypeManager.getInstance(fileType);
             return instance.parse(inputStream);
         }
+    }
+
+    protected boolean checkTime(boolean check, File file) {
+        return check ? this.checkTime(file.getName(), file.lastModified()) : true;
     }
 
     protected boolean checkTime(String fileName, long lastModified) {

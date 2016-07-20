@@ -26,11 +26,13 @@ public class ConfigurationLoaderPath extends ConfigurationLoaderFile {
         File file = (File) src;
         File[] files = file.listFiles(filter);
         for (File tmp : files) {
-            Object object = processInputStream(tmp);
-            if (object != null) {
-                String name = _getName(tmp);
-                datas.put(name, object);
-                LOGGER.debug("octopus configuration:{} loading to memcache", name);
+            if (this.checkTime(isHotReload, tmp)) {
+                Object object = processInputStream(tmp);
+                if (object != null) {
+                    String name = _getName(tmp);
+                    datas.put(name, object);
+                    LOGGER.debug("octopus configuration:{} loading to memcache", name);
+                }
             }
         }
         for (Map.Entry<String, Object> entry : datas.entrySet()) {
