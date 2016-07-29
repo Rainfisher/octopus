@@ -13,7 +13,7 @@ import org.quartz.impl.StdSchedulerFactory;
  * @author Alex Chou
  */
 public class QuartzUtils {
-    
+
     private static final Logger LOGGER = Logger.getInstance(QuartzUtils.class);
 
     public static void scheduleJob(JobDetail jobDetail, Trigger trigger)
@@ -21,7 +21,7 @@ public class QuartzUtils {
         Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
         scheduler.scheduleJob(jobDetail, trigger);
     }
-    
+
     public static void runNow(JobDetail jobDetail) {
         try {
             SimpleScheduleBuilder simpleSchedule = SimpleScheduleBuilder.simpleSchedule();
@@ -29,7 +29,8 @@ public class QuartzUtils {
             triggerBuilder.startNow();
             triggerBuilder.withSchedule(simpleSchedule);
             com.obsidian.octopus.utils.QuartzUtils.scheduleJob(jobDetail, triggerBuilder.build());
-        } catch (SchedulerException e) {
+        }
+        catch (SchedulerException e) {
             LOGGER.error("QuartzUtils runNow", e);
         }
     }

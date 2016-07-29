@@ -2,8 +2,6 @@ package com.obsidian.octopus.configuration;
 
 import com.obsidian.octopus.ioc.IocInstanceProvider;
 import com.obsidian.octopus.resolver.ConfigResolver;
-import java.io.File;
-import java.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +31,11 @@ public abstract class ConfigurationLoader {
 
     public abstract void process(boolean isHotReload) throws Exception;
 
-    protected void save(String name, Object data, boolean trigger) throws InstantiationException, IllegalAccessException {
+    public void save(String name, Object data) throws InstantiationException, IllegalAccessException {
+        this.save(name, data, true);
+    }
+
+    public void save(String name, Object data, boolean trigger) throws InstantiationException, IllegalAccessException {
         ConfigurationManager manager = ConfigurationManager.getInstance();
         manager.putConfiguration(name, data);
         if (trigger) {

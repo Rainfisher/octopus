@@ -1,5 +1,6 @@
 package com.obsidian.octopus.configuration.type;
 
+import com.obsidian.octopus.configuration.ConfigurationLoader;
 import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 
@@ -10,8 +11,9 @@ import org.apache.commons.io.IOUtils;
 public class ConfigurationTypeString implements ConfigurationTypeInterface {
 
     @Override
-    public Object parse(InputStream inputStream) throws Exception {
-        return IOUtils.toString(inputStream);
+    public void parse(ConfigurationLoader loader, String name, InputStream inputStream) throws Exception {
+        String string = IOUtils.toString(inputStream);
+        loader.save(name, string);
     }
 
 }

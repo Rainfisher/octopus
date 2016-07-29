@@ -15,10 +15,7 @@ public class ConfigurationLoaderInnerFile extends ConfigurationLoader {
     public void process(boolean isHotReload) throws Exception {
         String fileType = configResolver.getFileType();
         ConfigurationTypeInterface instance = ConfigurationTypeManager.getInstance(fileType);
-        Object object = instance.parse((InputStream) src);
-        if (object != null) {
-            save(_getName(), object, true);
-        }
+        instance.parse(this, _getName(), (InputStream) src);
     }
 
     private String _getName() {

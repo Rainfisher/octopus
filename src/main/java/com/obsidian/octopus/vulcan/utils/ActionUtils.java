@@ -33,7 +33,7 @@ public class ActionUtils {
             if (parameter.groupIndex() >= 0) {
                 name = InterceptorParameter.GROUP_NAME + parameter.groupIndex();
             }
-            Object value = param.get(name);
+            Object value = param.get(name.toLowerCase());
             if (value == null) {
                 if (!parameter.optional()) {
                     throw new ActionInjectException();

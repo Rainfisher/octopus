@@ -25,10 +25,7 @@ public class ConfigurationLoaderFile extends ConfigurationLoader {
     public void process(boolean isHotReload) throws Exception {
         File file = (File) src;
         if (this.checkTime(isHotReload, file)) {
-            Object object = processInputStream(file);
-            if (object != null) {
-                save(_getName(), object, true);
-            }
+            processInputStream(_getName(), file);
         }
     }
 
@@ -41,12 +38,12 @@ public class ConfigurationLoaderFile extends ConfigurationLoader {
         return name;
     }
 
-    protected Object processInputStream(File file)
+    protected void processInputStream(String name, File file)
             throws Exception {
         String fileType = configResolver.getFileType();
         try (InputStream inputStream = new FileInputStream(file)) {
             ConfigurationTypeInterface instance = ConfigurationTypeManager.getInstance(fileType);
-            return instance.parse(inputStream);
+            instance.parse(this, name, inputStream);
         }
     }
 
