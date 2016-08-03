@@ -57,6 +57,7 @@ public class HttpMessageReceivedEvent implements HandlerEvent<HttpRequestMessage
         actionRequest.setContext(requestMessage.getContext());
         actionRequest.setParameters(json);
         ActionContext.set(ActionContext.ACTION_REQUEST, actionRequest);
+        ActionContext.set(ActionContext.REQUEST_PARAMETERS, json);
         ActionContext.set(ActionContext.HTTP_RESPONSE_CODE, HttpResponseMessage.HTTP_STATUS_SUCCESS);
         ActionContext.set(ActionContext.REQUEST_CONTEXT, actionRequest.getContext());
 

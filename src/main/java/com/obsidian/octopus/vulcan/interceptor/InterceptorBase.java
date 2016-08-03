@@ -20,10 +20,13 @@ public class InterceptorBase implements Interceptor {
 
     @Override
     public boolean intercept(ActionInvocation invocation) throws Exception {
-        String actionName = (String) ActionContext.get(ActionContext.REQUEST_CONTEXT);
-        Action action = router.getAction(actionName);
+        Action action = (Action) ActionContext.get(ActionContext.ACTION_PRESET);
         if (action == null) {
-            throw new ActionNotFoundException();
+            String actionName = (String) ActionContext.get(ActionContext.REQUEST_CONTEXT);
+            action = router.getAction(actionName);
+            if (action == null) {
+                throw new ActionNotFoundException();
+            }
         }
         invocation.setAction(action);
         ActionContext.set(ActionContext.ACTION, action);

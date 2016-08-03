@@ -14,9 +14,11 @@ public class ActionContext {
     public static final String IO_SESSION = "IO_SESSION";
     public static final String REQUEST_MESSAGE = "REQUEST_MESSAGE";
     public static final String ACTION = "ACTION";
+    public static final String ACTION_PRESET = "ACTION_PRESET";
     public static final String ACTION_REQUEST = "ACTION_REQUEST";
     public static final String REQUEST_HEADERS = "REQUEST_HEADERS";
     public static final String REQUEST_CONTEXT = "REQUEST_CONTEXT";
+    public static final String REQUEST_PARAMETERS = "REQUEST_PARAMETERS";
     public static final String CONTEXT_MATCHER = "CONTEXT_MATCHER";
     
     public static final String RESPONSE_HEADERS = "RESPONSE_HEADERS";

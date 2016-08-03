@@ -84,6 +84,9 @@ public abstract class Dispatcher {
             ConfigurationHotLoader hotLoader = context.getConfigurationHotLoader();
             for (ConfigResolver configResolver : configResolvers) {
                 ConfigurationLoader loader = ConfigurationLoaderFactory.build(configResolver);
+                if (loader == null) {
+                    continue;
+                }
                 if (BooleanUtils.isTrue(configResolver.isHotLoad())) {
                     hotLoader.addConfigurationLoader(loader);
                 }

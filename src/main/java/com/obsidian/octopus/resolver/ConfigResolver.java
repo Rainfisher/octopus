@@ -14,6 +14,7 @@ public class ConfigResolver {
     private Boolean loadOnStart = false;
     private Boolean hotLoad = false;
     private Class callback;
+    private boolean allowNull = false;
 
     public String getName() {
         return name;
@@ -89,6 +90,14 @@ public class ConfigResolver {
 
     public void setCallback(Class callback) {
         this.callback = callback;
+    }
+
+    public boolean isAllowNull() {
+        return allowNull;
+    }
+
+    public void setAllowNull(boolean allowNull) {
+        this.allowNull = allowNull;
     }
 
 }
