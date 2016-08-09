@@ -59,6 +59,7 @@ public class OctopusMultIoHandler extends IoHandlerAdapter {
 
     @Override
     public void inputClosed(IoSession session) throws Exception {
+        super.inputClosed(session);
         this.trigger(session, HandlerEventType.InputClosed, null);
     }
 
