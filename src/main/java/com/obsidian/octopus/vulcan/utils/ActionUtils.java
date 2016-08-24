@@ -1,6 +1,5 @@
 package com.obsidian.octopus.vulcan.utils;
 
-import com.alibaba.fastjson.JSONObject;
 import com.obsidian.octopus.utils.Logger;
 import com.obsidian.octopus.vulcan.annotation.Parameter;
 import com.obsidian.octopus.vulcan.core.Action;
@@ -8,6 +7,7 @@ import com.obsidian.octopus.vulcan.exception.ActionInjectException;
 import com.obsidian.octopus.vulcan.interceptor.InterceptorParameter;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 import org.apache.commons.beanutils.BeanUtils;
 
 /**
@@ -18,7 +18,10 @@ public class ActionUtils {
 
     private static final Logger LOGGER = Logger.getInstance(ActionUtils.class);
 
-    public static void inject(Action action, JSONObject param) {
+    public static void inject(Action action, Map<String, Object> parameters) {
+        if (parameters == null) {
+            return;
+        }
         Class<? extends Action> actionClass = action.getClass();
         Field[] declaredFields = actionClass.getDeclaredFields();
         for (Field field : declaredFields) {
@@ -33,7 +36,7 @@ public class ActionUtils {
             if (parameter.groupIndex() >= 0) {
                 name = InterceptorParameter.GROUP_NAME + parameter.groupIndex();
             }
-            Object value = param.get(name.toLowerCase());
+            Object value = parameters.get(name.toLowerCase());
             if (value == null) {
                 if (!parameter.optional()) {
                     throw new ActionInjectException();

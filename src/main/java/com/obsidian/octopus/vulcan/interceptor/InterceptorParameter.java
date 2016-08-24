@@ -18,17 +18,14 @@ public class InterceptorParameter implements Interceptor {
     @Override
     public boolean intercept(ActionInvocation invocation) throws Exception {
         Action action = invocation.getAction();
-        JSONObject json = (JSONObject) ActionContext.get(ActionContext.REQUEST_PARAMETERS);
-        if (json != null) {
-            String[] group = (String[]) ActionContext.get(ActionContext.CONTEXT_MATCHER);
-            if (group != null) {
-                for (int i = 0; i < group.length; i++) {
-                    String string = group[i];
-                    json.put(GROUP_NAME + i, string);
-                }
+        String[] group = (String[]) ActionContext.get(ActionContext.CONTEXT_MATCHER);
+        if (group != null) {
+            for (int i = 0; i < group.length; i++) {
+                String string = group[i];
+                ActionContext.addParameter(GROUP_NAME + i, string);
             }
-            ActionUtils.inject(action, json);
         }
+        ActionUtils.inject(action, ActionContext.getParameters());
         return invocation.invoke();
     }
 

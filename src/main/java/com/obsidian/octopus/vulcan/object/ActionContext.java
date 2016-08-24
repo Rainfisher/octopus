@@ -20,7 +20,7 @@ public class ActionContext {
     public static final String REQUEST_CONTEXT = "REQUEST_CONTEXT";
     public static final String REQUEST_PARAMETERS = "REQUEST_PARAMETERS";
     public static final String CONTEXT_MATCHER = "CONTEXT_MATCHER";
-    
+
     public static final String RESPONSE_HEADERS = "RESPONSE_HEADERS";
     public static final String RESPONSE_CONTEXT = "RESPONSE_CONTEXT";
     public static final String RESPONSE_CODE = "RESPONSE_CODE";
@@ -86,6 +86,44 @@ public class ActionContext {
             set(RESPONSE_HEADERS, headers);
         }
         headers.put(key, value.toString());
+    }
+
+    public static void addParameters(Map<String, Object> map) {
+        Map<String, Object> maps = getParameters();
+        if (maps == null) {
+            maps = new HashMap<>();
+            set(REQUEST_PARAMETERS, maps);
+        }
+        maps.putAll(map);
+    }
+
+    public static void addParameter(String name, Object value) {
+        Map<String, Object> map = getParameters();
+        if (map == null) {
+            map = new HashMap<>();
+            set(REQUEST_PARAMETERS, map);
+        }
+        map.put(name, value);
+    }
+
+    public static Object getParameter(String name) {
+        Map<String, Object> map = getParameters();
+        if (map == null) {
+            return null;
+        }
+        return map.get(name);
+    }
+
+    public static Object removeParameter(String name) {
+        Map<String, Object> map = getParameters();
+        if (map == null) {
+            return null;
+        }
+        return map.remove(name);
+    }
+
+    public static Map<String, Object> getParameters() {
+        return (Map) get(REQUEST_PARAMETERS);
     }
 
     public static Action getAction() {

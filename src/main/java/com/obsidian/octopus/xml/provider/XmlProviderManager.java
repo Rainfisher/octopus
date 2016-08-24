@@ -1,5 +1,6 @@
 package com.obsidian.octopus.xml.provider;
 
+import com.obsidian.octopus.utils.Logger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,8 @@ import org.dom4j.Element;
  * @param <E> element
  */
 public class XmlProviderManager<E> {
+
+    private static final Logger LOGGER = Logger.getInstance(XmlProviderManager.class);
 
     private final Map<String, XmlProviderInterface<E>> mapping;
 
@@ -26,6 +29,9 @@ public class XmlProviderManager<E> {
             throws Exception {
         if (mapping.containsKey(name)) {
             XmlProviderInterface<E> provider = mapping.get(name);
+
+            LOGGER.trace("process xml: {}", provider.getClass());
+
             provider.process(e, element);
         }
     }
