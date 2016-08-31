@@ -6,15 +6,16 @@ import com.obsidian.octopus.vulcan.codec.RequestMessage;
 import com.obsidian.octopus.vulcan.object.ActionContext;
 import com.obsidian.octopus.vulcan.utils.HttpUtils;
 import org.apache.mina.core.session.IoSession;
+import org.apache.mina.handler.demux.MessageHandler;
 
 /**
  *
  * @author alex
  */
-public class HttpMessageSentEvent implements HandlerEvent<HttpResponseMessage> {
+public class HttpMessageSentEvent implements MessageHandler<HttpResponseMessage> {
 
     @Override
-    public void trigger(IoSession ioSession, HttpResponseMessage responseMessage) throws Exception {
+    public void handleMessage(IoSession ioSession, HttpResponseMessage message) throws Exception {
         RequestMessage requestMessage = ActionContext.getReqestMessage();
         if (requestMessage != null && requestMessage instanceof HttpRequestMessage) {
             HttpRequestMessage msg = (HttpRequestMessage) requestMessage;

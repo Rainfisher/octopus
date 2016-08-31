@@ -1,6 +1,5 @@
 package com.obsidian.octopus.vulcan.interceptor;
 
-import com.obsidian.octopus.context.ContextProvider;
 import com.obsidian.octopus.ioc.IocInstanceProvider;
 import com.obsidian.octopus.vulcan.core.Action;
 import java.util.ArrayList;
@@ -12,9 +11,14 @@ import java.util.List;
  */
 public class ActionInvocation {
 
+    private final IocInstanceProvider iocProvide;
     private Action action;
-    private final List<Class<? extends Interceptor>> list = new ArrayList<>();
+    private final List<Interceptor> list = new ArrayList<>();
     private int interceptorIndex = 0;
+
+    public ActionInvocation(IocInstanceProvider iocProvide) {
+        this.iocProvide = iocProvide;
+    }
 
     public Action getAction() {
         return action;
@@ -25,17 +29,15 @@ public class ActionInvocation {
     }
 
     public void addInterceptor(Class<? extends Interceptor> interceptor) {
-        list.add(interceptor);
+        Interceptor instance = iocProvide.getInstance(interceptor);
+        list.add(instance);
     }
 
     public boolean invoke() throws Exception {
-        IocInstanceProvider iocProvide = ContextProvider.getInstance().getIocProvide();
-
         boolean ret = true;
         if (interceptorIndex < list.size()) {
-            Class<? extends Interceptor> interceptor = list.get(interceptorIndex++);
-            Interceptor instance = iocProvide.getInstance(interceptor);
-            ret = instance.intercept(this);
+            Interceptor interceptor = list.get(interceptorIndex++);
+            ret = interceptor.intercept(this);
         }
         return ret;
     }

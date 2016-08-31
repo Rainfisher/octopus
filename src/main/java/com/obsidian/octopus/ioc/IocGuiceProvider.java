@@ -18,6 +18,9 @@ public abstract class IocGuiceProvider implements IocInstanceProvider {
         if (injector == null) {
             injector = getInjector();
         }
+        if (clazz == IocInstanceProvider.class) {
+            return (T) this;
+        }
         return injector.getInstance(clazz);
     }
 

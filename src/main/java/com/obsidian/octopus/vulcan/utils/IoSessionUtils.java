@@ -1,6 +1,5 @@
 package com.obsidian.octopus.vulcan.utils;
 
-import com.obsidian.octopus.vulcan.utils.ResponseUtils;
 import com.obsidian.octopus.vulcan.codec.HttpResponseMessage;
 import com.obsidian.octopus.vulcan.codec.IoSessionType;
 import com.obsidian.octopus.vulcan.codec.ResponseMessage;

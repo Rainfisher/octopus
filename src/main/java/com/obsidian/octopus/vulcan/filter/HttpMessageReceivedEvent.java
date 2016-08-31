@@ -16,15 +16,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.mina.core.session.IoSession;
+import org.apache.mina.handler.demux.MessageHandler;
 
 /**
  *
  * @author alex
  */
-public class HttpMessageReceivedEvent implements HandlerEvent<HttpRequestMessage> {
+public class HttpMessageReceivedEvent implements MessageHandler<HttpRequestMessage> {
 
     @Override
-    public void trigger(IoSession ioSession, HttpRequestMessage requestMessage) throws Exception {
+    public void handleMessage(IoSession ioSession, HttpRequestMessage requestMessage) throws Exception {
         Context context = ContextProvider.getInstance();
         IocInstanceProvider iocProvide = context.getIocProvide();
         ActionInvoker invoker = iocProvide.getInstance(ActionInvoker.class);
