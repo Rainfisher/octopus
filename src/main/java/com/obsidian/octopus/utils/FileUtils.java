@@ -3,9 +3,11 @@ package com.obsidian.octopus.utils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -52,10 +54,19 @@ public class FileUtils {
 
     public static String getReplacePath(String path) {
         Properties properties = System.getProperties();
-        for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-            path = path.replaceAll(String.format("\\{%s\\}", entry.getKey()), entry.getValue().toString());
+        //生成匹配模式的正则表达式 
+        String patternString = "\\$\\{(" + StringUtils.join(properties.keySet(), "|") + ")\\}";
+
+        Pattern pattern = Pattern.compile(patternString);
+        Matcher matcher = pattern.matcher(path);
+
+        //两个方法：appendReplacement, appendTail 
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, properties.getProperty(matcher.group(1)));
         }
-        return path;
+        matcher.appendTail(sb);
+        return sb.toString();
     }
 
 }
