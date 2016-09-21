@@ -9,8 +9,9 @@ import java.util.Map;
 public class ResponseMessage {
 
     private Map<String, String> headers;
-    private Integer responseCode;
+    private String context;
     private Object body;
+    private Integer responseCode;
     private boolean push;
 
     public Map<String, String> getHeaders() {
@@ -27,6 +28,14 @@ public class ResponseMessage {
 
     public void setResponseCode(Integer responseCode) {
         this.responseCode = responseCode;
+    }
+
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
     }
 
     public Object getBody() {

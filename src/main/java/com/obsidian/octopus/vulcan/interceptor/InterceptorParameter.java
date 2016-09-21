@@ -1,6 +1,5 @@
 package com.obsidian.octopus.vulcan.interceptor;
 
-import com.alibaba.fastjson.JSONObject;
 import com.obsidian.octopus.vulcan.core.Action;
 import com.obsidian.octopus.vulcan.object.ActionContext;
 import com.obsidian.octopus.vulcan.utils.ActionUtils;

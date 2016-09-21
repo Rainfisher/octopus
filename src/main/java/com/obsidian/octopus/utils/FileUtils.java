@@ -3,7 +3,7 @@ package com.obsidian.octopus.utils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.io.IOUtils;
@@ -53,9 +53,12 @@ public class FileUtils {
     }
 
     public static String getReplacePath(String path) {
-        Properties properties = System.getProperties();
+        return getReplacePath(System.getProperties(), path);
+    }
+
+    public static String getReplacePath(Map<Object, Object> datas, String path) {
         //生成匹配模式的正则表达式 
-        String patternString = "\\$\\{(" + StringUtils.join(properties.keySet(), "|") + ")\\}";
+        String patternString = "\\$\\{(" + StringUtils.join(datas.keySet(), "|") + ")\\}";
 
         Pattern pattern = Pattern.compile(patternString);
         Matcher matcher = pattern.matcher(path);
@@ -63,7 +66,7 @@ public class FileUtils {
         //两个方法：appendReplacement, appendTail 
         StringBuffer sb = new StringBuffer();
         while (matcher.find()) {
-            matcher.appendReplacement(sb, properties.getProperty(matcher.group(1)));
+            matcher.appendReplacement(sb, datas.get(matcher.group(1)).toString());
         }
         matcher.appendTail(sb);
         return sb.toString();

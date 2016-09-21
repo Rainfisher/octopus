@@ -1,7 +1,5 @@
 package com.obsidian.octopus.vulcan.object;
 
-import com.alibaba.fastjson.JSONObject;
-
 /**
  *
  * @author alex
@@ -10,7 +8,7 @@ public class ActionRequest {
 
     private String context;
     private String token;
-    private JSONObject parameters;
+    private Object parameters;
 
     public String getContext() {
         return context;
@@ -28,11 +26,11 @@ public class ActionRequest {
         this.token = token;
     }
 
-    public JSONObject getParameters() {
+    public Object getParameters() {
         return parameters;
     }
 
-    public void setParameters(JSONObject parameters) {
+    public void setParameters(Object parameters) {
         this.parameters = parameters;
     }
 
