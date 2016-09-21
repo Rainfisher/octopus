@@ -23,8 +23,21 @@ public class ActionUtils {
             return;
         }
         Class<? extends Action> actionClass = action.getClass();
-        Field[] declaredFields = actionClass.getDeclaredFields();
-        for (Field field : declaredFields) {
+        _inject(action, actionClass, parameters);
+        _checkSuper(action, actionClass, parameters);
+    }
+    
+    private static void _checkSuper(Action action, Class clazz, Map<String, Object> parameters) {
+        Class superclass = clazz.getSuperclass();
+        if (superclass != null) {
+            _inject(action, superclass, parameters);
+            _checkSuper(action, superclass, parameters);
+        }
+    }
+
+    private static void _inject(Action action, Class clazz, Map<String, Object> parameters) {
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
             Parameter parameter = field.getAnnotation(Parameter.class);
             if (parameter == null) {
                 continue;
