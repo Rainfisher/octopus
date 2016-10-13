@@ -24,7 +24,7 @@ public class ConfigurationLoaderFile extends ConfigurationLoader {
     @Override
     public void process(boolean isHotReload) throws Exception {
         File file = (File) src;
-        if (this.checkTime(isHotReload, file)) {
+        if (this.checkTime(file)) {
             processInputStream(_getName(), file);
         }
     }
@@ -47,8 +47,8 @@ public class ConfigurationLoaderFile extends ConfigurationLoader {
         }
     }
 
-    protected boolean checkTime(boolean check, File file) {
-        return check ? this.checkTime(file.getName(), file.lastModified()) : true;
+    protected boolean checkTime(File file) {
+        return this.checkTime(file.getName(), file.lastModified());
     }
 
     protected boolean checkTime(String fileName, long lastModified) {

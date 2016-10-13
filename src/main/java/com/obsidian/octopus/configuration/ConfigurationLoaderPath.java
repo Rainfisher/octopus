@@ -23,7 +23,7 @@ public class ConfigurationLoaderPath extends ConfigurationLoaderFile {
         File file = (File) src;
         File[] files = file.listFiles(filter);
         for (File tmp : files) {
-            if (this.checkTime(isHotReload, tmp)) {
+            if (this.checkTime(tmp)) {
                 processInputStream(_getName(tmp), tmp);
             }
         }
