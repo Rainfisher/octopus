@@ -1,6 +1,7 @@
 package com.obsidian.octopus.vulcan.interceptor;
 
 import com.obsidian.octopus.ioc.IocInstanceProvider;
+import com.obsidian.octopus.utils.Logger;
 import com.obsidian.octopus.vulcan.core.Action;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,8 @@ import java.util.List;
  * @author alex
  */
 public class ActionInvocation {
+
+    public static final Logger LOGGER = Logger.getInstance(ActionInvocation.class);
 
     private final IocInstanceProvider iocProvide;
     private Action action;
@@ -37,6 +40,8 @@ public class ActionInvocation {
         boolean ret = true;
         if (interceptorIndex < list.size()) {
             Interceptor interceptor = list.get(interceptorIndex++);
+            LOGGER.trace("interceptor intercept: {} action: {}",
+                    new Object[]{interceptor, action});
             ret = interceptor.intercept(this);
         }
         return ret;
