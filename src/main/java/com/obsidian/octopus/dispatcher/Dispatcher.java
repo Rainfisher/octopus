@@ -16,13 +16,11 @@ import com.obsidian.octopus.resolver.ListenerResolver;
 import com.obsidian.octopus.resolver.ModuleResolver;
 import com.obsidian.octopus.resolver.QuartzResolver;
 import com.obsidian.octopus.resolver.Resolver;
-import com.obsidian.octopus.utils.FileUtils;
 import com.obsidian.octopus.utils.QuartzUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang.BooleanUtils;
-import org.apache.log4j.PropertyConfigurator;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -192,11 +190,6 @@ public abstract class Dispatcher {
         private void _contextStart() throws Exception {
             IocInstanceProvider iocProvide = context.getIocProvide();
 
-            List<OctopusListener> listeners = context.getListeners();
-            for (OctopusListener octopusListener : listeners) {
-                octopusListener.onStart(context);
-            }
-
             boolean hotload = false;
             Map<ConfigResolver, ConfigurationLoader> map = context.getConfigurationLoaderMap();
             for (Map.Entry<ConfigResolver, ConfigurationLoader> entry : map.entrySet()) {
@@ -212,6 +205,11 @@ public abstract class Dispatcher {
 
             if (hotload) {
                 context.getConfigurationHotLoader().start();
+            }
+
+            List<OctopusListener> listeners = context.getListeners();
+            for (OctopusListener octopusListener : listeners) {
+                octopusListener.onStart(context);
             }
 
             if (System.getProperty("org.quartz.properties") != null) {

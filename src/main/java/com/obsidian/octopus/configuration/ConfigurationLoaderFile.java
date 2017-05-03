@@ -70,9 +70,7 @@ public class ConfigurationLoaderFile extends ConfigurationLoader {
                 String name = _getName();
                 data = ConfigurationManager.getInstance().getConfiguration(name);
             }
-            if (data != null) {
-                instance.trigger(data);
-            }
+            instance.trigger(data);
         }
     }
 
