@@ -124,7 +124,7 @@ public class HttpPostRequestDecoder extends MessageDecoderAdapter {
                             parameters.put(tokens[0].toLowerCase(), new String[]{""});
                             break;
                         default:
-                            String name = "@".concat(tokens[0]).toLowerCase();
+                            String name = tokens[0].toLowerCase();
                             if (parameters.containsKey(name)) {
                                 params = parameters.get(name);
                                 String[] tmp = new String[params.length + 1];

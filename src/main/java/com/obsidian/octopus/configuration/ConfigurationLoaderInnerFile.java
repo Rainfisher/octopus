@@ -37,7 +37,7 @@ public class ConfigurationLoaderInnerFile extends ConfigurationLoader {
                 data = ConfigurationManager.getInstance().getConfiguration(name);
             }
             if (data != null) {
-                instance.trigger(data);
+                instance.trigger(this.configResolver, data);
             }
         }
     }

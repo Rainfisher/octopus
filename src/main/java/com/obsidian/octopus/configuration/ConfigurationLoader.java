@@ -17,6 +17,10 @@ public abstract class ConfigurationLoader {
     protected Object src;
     protected IocInstanceProvider iocInstanceProvider;
 
+    public ConfigResolver getConfigResolver() {
+        return configResolver;
+    }
+
     public void setConfigResolver(ConfigResolver configResolver) {
         this.configResolver = configResolver;
     }
@@ -36,8 +40,10 @@ public abstract class ConfigurationLoader {
     }
 
     public void save(String name, Object data, boolean trigger) throws InstantiationException, IllegalAccessException {
-        ConfigurationManager manager = ConfigurationManager.getInstance();
-        manager.putConfiguration(name, data);
+        if (configResolver.isSave()) {
+            ConfigurationManager manager = ConfigurationManager.getInstance();
+            manager.putConfiguration(name, data);
+        }
         if (trigger) {
             triggerCallback(data);
         }

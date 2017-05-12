@@ -10,9 +10,10 @@ public class ConfigResolver {
     private String path;
     private String fileType;
     private String[] extensions;
-    private Boolean inner = false;
-    private Boolean loadOnStart = false;
-    private Boolean hotLoad = false;
+    private boolean inner = false;
+    private boolean loadOnStart = false;
+    private boolean hotLoad = false;
+    private boolean save = true;
     private Class callback;
     private boolean allowNull = false;
 
@@ -48,11 +49,11 @@ public class ConfigResolver {
         this.extensions = extensions;
     }
 
-    public Boolean isInner() {
+    public boolean isInner() {
         return inner;
     }
 
-    public void setInner(Boolean inner) {
+    public void setInner(boolean inner) {
         this.inner = inner;
         if (inner) {
             this.loadOnStart = true;
@@ -60,11 +61,11 @@ public class ConfigResolver {
         }
     }
 
-    public Boolean isLoadOnStart() {
+    public boolean isLoadOnStart() {
         return loadOnStart;
     }
 
-    public void setLoadOnStart(Boolean loadOnStart) {
+    public void setLoadOnStart(boolean loadOnStart) {
         if (!inner) {
             this.loadOnStart = loadOnStart;
         } else {
@@ -72,16 +73,24 @@ public class ConfigResolver {
         }
     }
 
-    public Boolean isHotLoad() {
+    public boolean isHotLoad() {
         return hotLoad;
     }
 
-    public void setHotLoad(Boolean hotLoad) {
+    public void setHotLoad(boolean hotLoad) {
         if (!inner) {
             this.hotLoad = hotLoad;
         } else {
             this.hotLoad = false;
         }
+    }
+
+    public boolean isSave() {
+        return save;
+    }
+
+    public void setSave(boolean save) {
+        this.save = save;
     }
 
     public Class getCallback() {
