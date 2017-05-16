@@ -1,6 +1,8 @@
 package com.obsidian.octopus.vulcan.interceptor;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.obsidian.octopus.utils.Logger;
 import com.obsidian.octopus.vulcan.annotation.Response;
 import com.obsidian.octopus.vulcan.core.Action;
@@ -54,7 +56,8 @@ public class InterceptorJson implements Interceptor {
                     }
                 }
             }
-            ActionContext.set(ActionContext.BODY, json);
+            ActionContext.set(ActionContext.BODY,
+                    JSON.toJSONString(json, SerializerFeature.DisableCircularReferenceDetect));
         }
         return ret;
     }

@@ -101,6 +101,7 @@ public class HttpGetRequestDecoder extends MessageDecoderAdapter {
                             }
                             params[params.length - 1] = tokens[1].trim();
                             parameters.put(name, params);
+                            break;
                     }
                 }
             }
@@ -111,5 +112,5 @@ public class HttpGetRequestDecoder extends MessageDecoderAdapter {
             LOGGER.debug("parseRequest", ex);
         }
     }
-    
+
 }
