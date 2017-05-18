@@ -1,4 +1,4 @@
- /*
+/*
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
  *  distributed with this work for additional information
@@ -58,19 +58,19 @@ public class HttpResponseMessage {
     private int responseCode = HTTP_STATUS_SUCCESS;
 
     public HttpResponseMessage() {
-          headers.put("Server", "Java Server 1.8");
+        headers.put("Server", "Java Server 1.8");
         headers.put("Cache-Control", "no-cache");
         headers.put("Content-Type", "text/html; charset=iso-8859-1");
         headers.put("Date", new SimpleDateFormat(
-            "EEE, dd MMM yyyy HH:mm:ss zzz").format(new Date()));
+                "EEE, dd MMM yyyy HH:mm:ss zzz").format(new Date()));
         headers.put("Last-Modified", new SimpleDateFormat(
-            "EEE, dd MMM yyyy HH:mm:ss zzz").format(new Date()));
+                "EEE, dd MMM yyyy HH:mm:ss zzz").format(new Date()));
     }
 
     public Map<String, String> getHeaders() {
         return headers;
     }
-    
+
     public void setHeader(String key, String value) {
         headers.put(key, value);
     }
@@ -90,7 +90,8 @@ public class HttpResponseMessage {
     public void appendBody(byte[] b) {
         try {
             body.write(b);
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             LOGGER.warn("appendBody byte", ex);
         }
     }
@@ -98,7 +99,8 @@ public class HttpResponseMessage {
     public void appendBody(String s) {
         try {
             body.write(s.getBytes());
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             LOGGER.warn("appendBody String", ex);
         }
     }
