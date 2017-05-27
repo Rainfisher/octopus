@@ -12,10 +12,11 @@ import org.apache.commons.io.IOUtils;
 public class ConfigurationTypeFastJson implements ConfigurationTypeInterface {
 
     @Override
-    public void parse(ConfigurationLoader loader, String name, InputStream inputStream) throws Exception {
+    public void parse(ConfigurationLoader loader, String name,
+            InputStream inputStream, boolean hotLoad) throws Exception {
         String text = IOUtils.toString(inputStream);
         JSONObject json = JSONObject.parseObject(text);
-        loader.save(name, json);
+        loader.save(name, json, hotLoad);
     }
 
 }

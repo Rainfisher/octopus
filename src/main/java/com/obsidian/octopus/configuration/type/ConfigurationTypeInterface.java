@@ -9,6 +9,7 @@ import java.io.InputStream;
  */
 public interface ConfigurationTypeInterface {
 
-    void parse(ConfigurationLoader loader, String name, InputStream inputStream) throws Exception;
+    public abstract void parse(ConfigurationLoader loader, String name,
+            InputStream inputStream, boolean hotLoad) throws Exception;
 
 }

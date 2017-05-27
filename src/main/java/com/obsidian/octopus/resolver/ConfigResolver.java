@@ -10,6 +10,7 @@ public class ConfigResolver {
     private String path;
     private String fileType;
     private String[] extensions;
+    private boolean recursive = false;
     private boolean inner = false;
     private boolean loadOnStart = false;
     private boolean hotLoad = false;
@@ -47,6 +48,14 @@ public class ConfigResolver {
 
     public void setExtensions(String[] extensions) {
         this.extensions = extensions;
+    }
+
+    public boolean isRecursive() {
+        return recursive;
+    }
+
+    public void setRecursive(boolean recursive) {
+        this.recursive = recursive;
     }
 
     public boolean isInner() {

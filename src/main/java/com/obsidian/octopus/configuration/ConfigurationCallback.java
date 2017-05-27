@@ -8,6 +8,6 @@ import com.obsidian.octopus.resolver.ConfigResolver;
  */
 public interface ConfigurationCallback {
 
-    void trigger(ConfigResolver resolver, Object data);
+    void trigger(ConfigResolver resolver, String name, Object data, boolean hotLoad);
 
 }

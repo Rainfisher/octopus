@@ -20,6 +20,7 @@ import com.obsidian.octopus.utils.QuartzUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.apache.commons.lang.BooleanUtils;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
@@ -54,15 +55,17 @@ public abstract class Dispatcher {
         public void start(Resolver resolver) throws Exception {
             moduleResolver = resolver.getModuleResolver();
             context = ContextProvider.getInstance();
+
             _processConfig();
-
             _contextConfig();
-
             _processIoc();
-            _processListener();
-            _processFilter();
-            _processQuartz();
+            _triggerConfigCallback();
 
+            _processListener();
+
+            _processFilter();
+
+            _processQuartz();
             _contextStart();
         }
 
@@ -91,6 +94,35 @@ public abstract class Dispatcher {
             }
             IocInstanceProvider iocProvide = (IocInstanceProvider) clazz.newInstance();
             context.setIocProvide(iocProvide);
+        }
+
+        private void _contextConfig() throws Exception {
+            Map<ConfigResolver, ConfigurationLoader> map = context.getConfigurationLoaderMap();
+            for (Map.Entry<ConfigResolver, ConfigurationLoader> entry : map.entrySet()) {
+                ConfigResolver configResolver = entry.getKey();
+                ConfigurationLoader loader = entry.getValue();
+                if (BooleanUtils.isTrue(configResolver.isHotLoad())) {
+                    if (BooleanUtils.isTrue(configResolver.isLoadOnStart())) {
+                        loader.process(false);
+                    }
+                } else {
+                    loader.process(false);
+                }
+            }
+        }
+
+        private void _triggerConfigCallback() throws Exception {
+            IocInstanceProvider iocProvide = context.getIocProvide();
+            Map<ConfigResolver, ConfigurationLoader> map = context.getConfigurationLoaderMap();
+            for (Map.Entry<ConfigResolver, ConfigurationLoader> entry : map.entrySet()) {
+                ConfigurationLoader loader = entry.getValue();
+                loader.setIocInstanceProvider(iocProvide);
+
+                Set<String> names = loader.getNames();
+                for (String name : names) {
+                    loader.triggerCallback(name, null, false);
+                }
+            }
         }
 
         private void _processListener() throws Exception {
@@ -172,21 +204,6 @@ public abstract class Dispatcher {
 
         }
 
-        private void _contextConfig() throws Exception {
-            Map<ConfigResolver, ConfigurationLoader> map = context.getConfigurationLoaderMap();
-            for (Map.Entry<ConfigResolver, ConfigurationLoader> entry : map.entrySet()) {
-                ConfigResolver configResolver = entry.getKey();
-                ConfigurationLoader loader = entry.getValue();
-                if (BooleanUtils.isTrue(configResolver.isHotLoad())) {
-                    if (BooleanUtils.isTrue(configResolver.isLoadOnStart())) {
-                        loader.reload();
-                    }
-                } else {
-                    loader.reload();
-                }
-            }
-        }
-
         private void _contextStart() throws Exception {
             IocInstanceProvider iocProvide = context.getIocProvide();
 
@@ -194,13 +211,9 @@ public abstract class Dispatcher {
             Map<ConfigResolver, ConfigurationLoader> map = context.getConfigurationLoaderMap();
             for (Map.Entry<ConfigResolver, ConfigurationLoader> entry : map.entrySet()) {
                 ConfigResolver configResolver = entry.getKey();
-                ConfigurationLoader loader = entry.getValue();
-                loader.setIocInstanceProvider(iocProvide);
-
                 if (BooleanUtils.isTrue(configResolver.isHotLoad())) {
                     hotload = true;
                 }
-                loader.triggerCallback(null);
             }
 
             if (hotload) {

@@ -2,6 +2,8 @@ package com.obsidian.octopus.configuration;
 
 import com.obsidian.octopus.ioc.IocInstanceProvider;
 import com.obsidian.octopus.resolver.ConfigResolver;
+import java.util.HashSet;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,8 +16,8 @@ public abstract class ConfigurationLoader {
     protected static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationLoader.class);
 
     protected ConfigResolver configResolver;
-    protected Object src;
     protected IocInstanceProvider iocInstanceProvider;
+    protected Set<String> names = new HashSet<>();
 
     public ConfigResolver getConfigResolver() {
         return configResolver;
@@ -25,33 +27,41 @@ public abstract class ConfigurationLoader {
         this.configResolver = configResolver;
     }
 
-    public void setSrc(Object src) {
-        this.src = src;
-    }
-
     public void setIocInstanceProvider(IocInstanceProvider iocInstanceProvider) {
         this.iocInstanceProvider = iocInstanceProvider;
     }
 
-    public abstract void process(boolean isHotReload) throws Exception;
-
-    public void save(String name, Object data) throws InstantiationException, IllegalAccessException {
-        this.save(name, data, true);
+    public Set<String> getNames() {
+        return names;
     }
 
-    public void save(String name, Object data, boolean trigger) throws InstantiationException, IllegalAccessException {
+    public abstract void process(boolean isHotReload) throws Exception;
+
+    public void save(String name, Object data, boolean hotLoad) {
+        this.save(name, data, true, hotLoad);
+    }
+
+    public void save(String name, Object data, boolean trigger, boolean hotLoad) {
         if (configResolver.isSave()) {
             ConfigurationManager manager = ConfigurationManager.getInstance();
             manager.putConfiguration(name, data);
         }
+        names.add(name);
         if (trigger) {
-            triggerCallback(data);
+            triggerCallback(name, data, hotLoad);
         }
         LOGGER.info("octopus configuration:{} loading success", name);
     }
 
-    public abstract void triggerCallback(Object data);
-
-    public abstract void reload() throws Exception;
+    public void triggerCallback(String name, Object data, boolean hotLoad) {
+        Class callback = configResolver.getCallback();
+        if (callback != null && iocInstanceProvider != null) {
+            if (data == null) {
+                data = ConfigurationManager.getInstance().getConfiguration(name);
+            }
+            ConfigurationCallback instance = (ConfigurationCallback) iocInstanceProvider.getInstance(callback);
+            instance.trigger(this.configResolver, name, data, hotLoad);
+        }
+    }
 
 }

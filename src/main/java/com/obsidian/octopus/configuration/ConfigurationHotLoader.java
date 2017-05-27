@@ -39,7 +39,7 @@ public class ConfigurationHotLoader extends Thread {
             try {
                 TimeUnit.SECONDS.sleep(1L);
             }
-            catch (Exception e) {
+            catch (InterruptedException e) {
             }
         }
     }

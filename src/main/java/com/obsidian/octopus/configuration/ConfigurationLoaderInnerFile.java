@@ -2,6 +2,7 @@ package com.obsidian.octopus.configuration;
 
 import com.obsidian.octopus.configuration.type.ConfigurationTypeInterface;
 import com.obsidian.octopus.configuration.type.ConfigurationTypeManager;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import org.apache.commons.io.FilenameUtils;
 
@@ -13,9 +14,17 @@ public class ConfigurationLoaderInnerFile extends ConfigurationLoader {
 
     @Override
     public void process(boolean isHotReload) throws Exception {
+        String path = configResolver.getPath();
         String fileType = configResolver.getFileType();
+        InputStream inputStream = Thread.class.getResourceAsStream(path);
+        if (inputStream == null) {
+            if (!configResolver.isAllowNull()) {
+                throw new FileNotFoundException(path);
+            }
+            return;
+        }
         ConfigurationTypeInterface instance = ConfigurationTypeManager.getInstance(fileType);
-        instance.parse(this, _getName(), (InputStream) src);
+        instance.parse(this, _getName(), inputStream, isHotReload);
     }
 
     private String _getName() {
@@ -24,27 +33,6 @@ public class ConfigurationLoaderInnerFile extends ConfigurationLoader {
             name = FilenameUtils.getBaseName(configResolver.getPath());
         }
         return name;
-    }
-
-    @Override
-    public void triggerCallback(Object data) {
-        Class callback = configResolver.getCallback();
-        if (callback != null && iocInstanceProvider != null) {
-            ConfigurationCallback instance = (ConfigurationCallback) iocInstanceProvider.getInstance(callback);
-
-            if (data == null) {
-                String name = _getName();
-                data = ConfigurationManager.getInstance().getConfiguration(name);
-            }
-            if (data != null) {
-                instance.trigger(this.configResolver, data);
-            }
-        }
-    }
-
-    @Override
-    public void reload() throws Exception {
-        process(false);
     }
 
 }

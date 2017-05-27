@@ -1,7 +1,6 @@
 package com.obsidian.octopus.configuration;
 
 import com.obsidian.octopus.resolver.ConfigResolver;
-import java.io.File;
 
 /**
  *
@@ -10,34 +9,13 @@ import java.io.File;
 public class ConfigurationLoaderFactory {
 
     public static ConfigurationLoader build(ConfigResolver configResolver) {
-        Object src;
-        ConfigurationLoader loader = null;
-
+        ConfigurationLoader loader;
         if (configResolver.isInner()) {
-            src = Thread.class.getResourceAsStream(configResolver.getPath());
-            if (src == null) {
-                return null;
-            }
             loader = new ConfigurationLoaderInnerFile();
         } else {
-            File file = new File(configResolver.getPath());
-            if (!file.exists()) {
-                return null;
-            }
-            if (file.isDirectory()) {
-                loader = new ConfigurationLoaderPath();
-            } else if (file.isFile()) {
-                loader = new ConfigurationLoaderFile();
-            }
-            src = file;
+            loader = new ConfigurationLoaderFile();
         }
-
-        if (loader == null) {
-            return null;
-        }
-
         loader.setConfigResolver(configResolver);
-        loader.setSrc(src);
         return loader;
     }
 

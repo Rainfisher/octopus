@@ -11,10 +11,11 @@ import java.util.Properties;
 public class ConfigurationTypeProperties implements ConfigurationTypeInterface {
 
     @Override
-    public void parse(ConfigurationLoader loader, String name, InputStream inputStream) throws Exception {
+    public void parse(ConfigurationLoader loader, String name,
+            InputStream inputStream, boolean hotLoad) throws Exception {
         Properties properties = new Properties();
         properties.load(inputStream);
-        loader.save(name, properties);
+        loader.save(name, properties, hotLoad);
     }
 
 }

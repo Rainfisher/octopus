@@ -7,7 +7,7 @@ import com.obsidian.octopus.ioc.IocInstanceProvider;
 import com.obsidian.octopus.listener.OctopusListener;
 import com.obsidian.octopus.resolver.ConfigResolver;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.quartz.Scheduler;
@@ -28,7 +28,7 @@ class ContextImpl implements Context {
     private Scheduler scheduler;
 
     public ContextImpl() {
-        configurationLoaderMap = new HashMap<>();
+        configurationLoaderMap = new LinkedHashMap<>();
         configurationHotLoader = new ConfigurationHotLoader();
         listeners = new ArrayList<>();
         filters = new ArrayList<>();
