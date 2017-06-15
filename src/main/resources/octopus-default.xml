@@ -35,11 +35,6 @@
             <listener-class>com.obsidian.octopus.listener.OctopusListener</listener-class>
         </listener>
 
-        <filter>
-            <group>core</group>
-            <filter-class></filter-class>
-        </filter>
-
         <quartz-config>conf/json/quartz.properties</quartz-config>
         <quartz-group id="group1">
             <job id="job1">

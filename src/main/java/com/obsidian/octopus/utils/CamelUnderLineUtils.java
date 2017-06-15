@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 public class CamelUnderLineUtils {
 
     public static final char UNDERLINE = '_';
+    private static final Pattern UNDERLINE_PATTERN = Pattern.compile("_");
 
     public static String camelToUnderline(String param) {
         if (param == null || "".equals(param.trim())) {
@@ -49,11 +50,11 @@ public class CamelUnderLineUtils {
     }
 
     public static String underlineToCamel2(String param) {
-        if (param == null || "".equals(param.trim())) {
+        if (param == null || param.trim().isEmpty()) {
             return "";
         }
         StringBuilder sb = new StringBuilder(param);
-        Matcher mc = Pattern.compile("_").matcher(param);
+        Matcher mc = UNDERLINE_PATTERN.matcher(param);
         int i = 0;
         while (mc.find()) {
             int position = mc.end() - (i++);
@@ -62,5 +63,5 @@ public class CamelUnderLineUtils {
         }
         return sb.toString();
     }
-    
+
 }
