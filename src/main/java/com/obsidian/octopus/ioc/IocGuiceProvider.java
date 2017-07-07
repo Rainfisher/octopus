@@ -2,6 +2,7 @@ package com.obsidian.octopus.ioc;
 
 import com.google.inject.ConfigurationException;
 import com.google.inject.Injector;
+import org.apache.commons.lang.ClassUtils;
 
 /**
  *
@@ -14,12 +15,24 @@ public abstract class IocGuiceProvider implements IocInstanceProvider {
     public abstract Injector getInjector();
 
     @Override
-    public <T> T getInstance(Class<? extends T> clazz) {
+    public Object getInstance(String name) {
+        Class clazz;
+        try {
+            clazz = ClassUtils.getClass(name);
+        }
+        catch (ClassNotFoundException e) {
+            return null;
+        }
+        return getInstance(clazz);
+    }
+
+    @Override
+    public Object getInstance(Class clazz) {
         if (injector == null) {
             injector = getInjector();
         }
         if (clazz == IocInstanceProvider.class) {
-            return (T) this;
+            return this;
         }
         return injector.getInstance(clazz);
     }
@@ -33,7 +46,7 @@ public abstract class IocGuiceProvider implements IocInstanceProvider {
     }
 
     @Override
-    public boolean canInject(Class clazz) {
+    public boolean canInject(String clazz) {
         Object instance = null;
         try {
             instance = getInstance(clazz);
@@ -42,5 +55,5 @@ public abstract class IocGuiceProvider implements IocInstanceProvider {
         }
         return instance != null;
     }
-
+    
 }

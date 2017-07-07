@@ -21,11 +21,11 @@ public class OctopusInnerListenerModuleListener implements OctopusInnerListener 
         IocInstanceProvider iocProvide = context.getIocProvide();
         List<ListenerResolver> listenerResolvers = resolver.getListenerResolvers();
         for (ListenerResolver listenerResolver : listenerResolvers) {
-            Class clazz = listenerResolver.getListenerClass();
-            if (clazz == null) {
+            String clazz = listenerResolver.getListenerClass();
+            OctopusListener listener = (OctopusListener) iocProvide.getInstance(clazz);
+            if (listener == null) {
                 throw new NullPointerException("octopus: listener class is empty");
             }
-            OctopusListener listener = (OctopusListener) iocProvide.getInstance(clazz);
             context.addListener(listener);
         }
     }

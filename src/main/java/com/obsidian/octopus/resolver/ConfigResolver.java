@@ -15,7 +15,7 @@ public class ConfigResolver {
     private boolean loadOnStart = false;
     private boolean hotLoad = false;
     private boolean save = true;
-    private Class callback;
+    private String callback;
     private boolean allowNull = false;
 
     public String getName() {
@@ -102,11 +102,11 @@ public class ConfigResolver {
         this.save = save;
     }
 
-    public Class getCallback() {
+    public String getCallback() {
         return callback;
     }
 
-    public void setCallback(Class callback) {
+    public void setCallback(String callback) {
         this.callback = callback;
     }
 

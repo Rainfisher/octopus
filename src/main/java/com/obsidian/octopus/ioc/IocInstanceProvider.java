@@ -6,10 +6,12 @@ package com.obsidian.octopus.ioc;
  */
 public interface IocInstanceProvider {
 
-    <T> T getInstance(Class<? extends T> clazz);
+    Object getInstance(Class clazz);
+
+    Object getInstance(String name);
 
     void injectMembers(Object instance);
-    
-    boolean canInject(Class clazz);
-    
+
+    boolean canInject(String clazz);
+
 }

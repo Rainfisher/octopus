@@ -16,15 +16,22 @@ import java.util.Map;
  */
 class ContextImpl implements Context {
 
+    private final String[] args;
     private final Map<ConfigResolver, ConfigurationLoader> configurationLoaderMap;
     private final ConfigurationHotLoader configurationHotLoader;
     private IocInstanceProvider iocProvide;
     private final List<OctopusListener> listeners;
 
-    public ContextImpl() {
-        configurationLoaderMap = new LinkedHashMap<>();
-        configurationHotLoader = new ConfigurationHotLoader();
-        listeners = new ArrayList<>();
+    public ContextImpl(String[] args) {
+        this.args = args;
+        this.configurationLoaderMap = new LinkedHashMap<>();
+        this.configurationHotLoader = new ConfigurationHotLoader();
+        this.listeners = new ArrayList<>();
+    }
+
+    @Override
+    public String[] getArgs() {
+        return args;
     }
 
     @Override

@@ -32,7 +32,7 @@ public class ActionInvocation {
     }
 
     public void addInterceptor(Class<? extends Interceptor> interceptor) {
-        Interceptor instance = iocProvide.getInstance(interceptor);
+        Interceptor instance = (Interceptor) iocProvide.getInstance(interceptor);
         list.add(instance);
     }
 

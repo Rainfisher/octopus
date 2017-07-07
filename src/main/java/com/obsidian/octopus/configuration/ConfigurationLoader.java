@@ -54,13 +54,15 @@ public abstract class ConfigurationLoader {
     }
 
     public void triggerCallback(String name, Object data, boolean hotLoad) {
-        Class callback = configResolver.getCallback();
+        String callback = configResolver.getCallback();
         if (callback != null && iocInstanceProvider != null) {
             if (data == null) {
                 data = ConfigurationManager.getInstance().getConfiguration(name);
             }
             ConfigurationCallback instance = (ConfigurationCallback) iocInstanceProvider.getInstance(callback);
-            instance.trigger(this.configResolver, name, data, hotLoad);
+            if (instance != null) {
+                instance.trigger(this.configResolver, name, data, hotLoad);
+            }
         }
     }
 

@@ -28,7 +28,7 @@ public abstract class Dispatcher {
         @Override
         public void start(Resolver resolver) throws Exception {
             moduleResolver = resolver.getModuleResolver();
-            context = ContextProvider.getInstance();
+            context = ContextProvider.setInstance(resolver.getArgs());
 
             List<OctopusInnerListener> listeners = OctopusInnerListenerManager.getListeners();
             for (OctopusInnerListener listener : listeners) {

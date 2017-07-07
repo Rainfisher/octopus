@@ -24,7 +24,7 @@ public class GuiceJobFactory extends SimpleJobFactory {
     public Job newJob(TriggerFiredBundle bundle, Scheduler scheduler) throws SchedulerException {
         JobDetail jobDetail = bundle.getJobDetail();
         Class<? extends Job> jobClass = jobDetail.getJobClass();
-        return iocInstanceProvider.getInstance(jobClass);
+        return (Job) iocInstanceProvider.getInstance(jobClass);
     }
 
 }

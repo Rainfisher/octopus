@@ -42,7 +42,7 @@ public class RouterImpl implements Router {
         }
 
         if (clazz != null) {
-            action = ContextProvider.getInstance().getIocProvide().getInstance(clazz);
+            action = (Action) ContextProvider.getInstance().getIocProvide().getInstance(clazz);
         }
 
         return action;

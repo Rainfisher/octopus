@@ -28,7 +28,7 @@ public class HttpMessageReceivedEvent implements MessageHandler<HttpRequestMessa
     public void handleMessage(IoSession ioSession, HttpRequestMessage requestMessage) throws Exception {
         Context context = ContextProvider.getInstance();
         IocInstanceProvider iocProvide = context.getIocProvide();
-        ActionInvoker invoker = iocProvide.getInstance(ActionInvoker.class);
+        ActionInvoker invoker = (ActionInvoker) iocProvide.getInstance(ActionInvoker.class);
 
         requestMessage.setExecuteAt(System.currentTimeMillis());
         ActionContext.init();

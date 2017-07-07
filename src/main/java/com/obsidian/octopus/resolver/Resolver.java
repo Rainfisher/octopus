@@ -9,11 +9,20 @@ import java.util.Map;
  */
 public class Resolver {
 
+    private String[] args;
     private String moduleName;
     private final Map<String, ModuleResolver> moduleMap;
 
     public Resolver() {
         this.moduleMap = new HashMap<>();
+    }
+
+    public String[] getArgs() {
+        return args;
+    }
+
+    public void setArgs(String[] args) {
+        this.args = args;
     }
 
     public String getModuleName() {

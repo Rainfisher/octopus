@@ -7,7 +7,7 @@ package com.obsidian.octopus.resolver;
 public class FilterResolver {
 
     private String group;
-    private Class clazz;
+    private String clazz;
 
     public String getGroup() {
         return group;
@@ -17,11 +17,11 @@ public class FilterResolver {
         this.group = group;
     }
 
-    public Class getClazz() {
+    public String getClazz() {
         return clazz;
     }
 
-    public void setClazz(Class clazz) {
+    public void setClazz(String clazz) {
         this.clazz = clazz;
     }
 

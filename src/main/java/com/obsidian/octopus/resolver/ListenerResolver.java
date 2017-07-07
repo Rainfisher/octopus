@@ -6,13 +6,13 @@ package com.obsidian.octopus.resolver;
  */
 public class ListenerResolver {
 
-    private Class listenerClass;
+    private String listenerClass;
 
-    public Class getListenerClass() {
+    public String getListenerClass() {
         return listenerClass;
     }
 
-    public void setListenerClass(Class listenerClass) {
+    public void setListenerClass(String listenerClass) {
         this.listenerClass = listenerClass;
     }
 
